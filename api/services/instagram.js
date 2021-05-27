@@ -1,6 +1,11 @@
 //const User = require('../models/user');
-const FB = require('fb');
-const fb = new FB.Facebook(options);
+
+// Using ES2015 import through Babel
+
+const ACCESS_TOKEN = "EAAazsfFwidUBAAAAFLZC8TjCxEqfJZBy69XjxwCDQ6hx0NnJfcaWT5ZBbbMITtTMbfracFVEzq2UjUiaCBw96YrpNGNUKLIt1lcSDwMQpKHC9x0gPeCEoZCtZAo4phayPwQrHBg45MhOKuKZAEFj4TlYDSJ0kZBydhdtQtfdlFFtIGrEiUvRKmnYbDUTuZBfuZC7QO4k0ZB6aBiyh0xUZCNWPOf7ylwbEZC4ZAlfCOMPYR17rXAaOZAjiGrh6w";
+var FB = require('fb');
+
+
 
 exports.getById = async (req, res, next) => {
     const { id } = req.params;
@@ -20,26 +25,16 @@ exports.getById = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
 
-    FB.setAccessToken('access_token');
-    try {
-        FB.api(
-            '/17841447861770720',
-            'GET',
-            {"fields":"business_discovery.username(medichome_utbm){media{comments_count,like_count}}"},
-            function(res) {
-
-                if(!res || res.error) {
-                    console.log(!res ? 'error occurred' : res.error);
-                    return res.status(404).json('posts_not_found');
-                }
-                console.log(res);
-                return res.status(200).json(res);
-                
-            }
-          );
-    } catch (error) {
-        return res.status(501).json(error);
+    FB.setAccessToken(ACCESS_TOKEN);
+    FB.api(
+    '17841447861770720?fields=business_discovery.username(medichome_utbm){media_count,media}',
+    //'17841447861770720?fields=business_discovery.username(bluebottle){media}',
+    'GET',
+    function (response) {
+        console.log(response);
+        return res.status(200).json(response);
     }
+);
 }
 
 exports.add = async (req, res, next) => {

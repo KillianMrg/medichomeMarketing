@@ -2,7 +2,7 @@
 
 // Using ES2015 import through Babel
 
-const ACCESS_TOKEN = "EAAazsfFwidUBAAAAFLZC8TjCxEqfJZBy69XjxwCDQ6hx0NnJfcaWT5ZBbbMITtTMbfracFVEzq2UjUiaCBw96YrpNGNUKLIt1lcSDwMQpKHC9x0gPeCEoZCtZAo4phayPwQrHBg45MhOKuKZAEFj4TlYDSJ0kZBydhdtQtfdlFFtIGrEiUvRKmnYbDUTuZBfuZC7QO4k0ZB6aBiyh0xUZCNWPOf7ylwbEZC4ZAlfCOMPYR17rXAaOZAjiGrh6w";
+const ACCESS_TOKEN = "EAAazsfFwidUBAIOS3VFOjk9jsBVC2wJZCyqwIy69jtJgOUlgFZBJREEVZBnFwxZBiO0k2RrcZAZAIZAmxybpb0XhlKIhcgxQDPyqN9GzQZCHvdj9Khm5cL1HCTtnBRIzBk7x7F2ZAwsFnfmPxFwseLhRHvEFwtblZCpq5ZBCfbKE4N8zzg5BZAA8sZBURHAIzeIBLKETXN5KdG7CN4zH5xbY1IVfxt0ndp7fIRSEgqJaMpZBbNCLml5Cr9WFfPpMj9ZCWaZCkK0ZD";
 var FB = require('fb');
 
 
@@ -23,19 +23,68 @@ exports.getById = async (req, res, next) => {
     }
 }
 
+
+
 exports.getAll = async (req, res, next) => {
 
     FB.setAccessToken(ACCESS_TOKEN);
     FB.api(
     '17841447861770720?fields=business_discovery.username(medichome_utbm){media_count,media}',
-    //'17841447861770720?fields=business_discovery.username(bluebottle){media}',
     'GET',
     function (response) {
         console.log(response);
-        return res.status(200).json(response);
-    }
-);
+        response.business_discovery.media.data.forEach(function(element) {
+            console.log(element.id);
+            FB.api(element.id,
+                'GET',
+                //{"fields":"id,ig_id,caption,comments_count,like_count,media_type,media_url,timestamp,username,hidden}"},
+                {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
+                function (content) {
+                    console.log(content);
+                    return res.status(200).json(content);
+                }
+            );
+        })
+    })
 }
+
+/*exports.getAllContentById = async (req, res, next) => {
+    FB.setAccessToken(ACCESS_TOKEN);
+    req.forEach(function(element) {
+        FB.api(element.id,
+            'GET',
+            {"fields":"id,ig_id,caption,comments_count,like_count,media_type,media_url,timestamp,username,hidden}"},
+            function (response) {
+                console.log(element.id);
+                return res.status(200).json(response);
+            }
+        );
+    })
+    
+}
+
+exports.getAllContent = async (req, res, next) => {
+
+    FB.setAccessToken(ACCESS_TOKEN);
+    req.forEach(function(element) {
+
+        FB.api(element.id,
+            'GET',
+            {"fields":"id,ig_id,caption,comments_count,like_count,media_type,media_url,timestamp,username,hidden}"},
+            function (response) {
+                console.log(element.id);
+                return res.status(200).json(response);
+            }
+        );
+    })
+    
+}*/
+
+
+
+
+
+
 
 exports.add = async (req, res, next) => {
     const temp = {};

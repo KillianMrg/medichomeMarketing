@@ -2,26 +2,34 @@ const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 const bcrypt   = require('bcryptjs');
 
-const User = new Schema({
-    name: {
-        type    : String,
+const Post = new Schema({
+    id: {
+        type    : int,
         trim    : true,
-        required: [true, 'Le nom est obligatoire']
     },
-    firstname: {
+    ig_id: {
+        type    : int,
+        trim    : true,
+    },
+    username:{
         type: String,
         trim: true
     },
-    email: {
-        type     : String,
-        trim     : true,
-        required : [true, 'L’email est obligatoire'],
-        unique   : true, // index unique
-        lowercase: true
-    },
-    password: {
+    titleMarketing: {
         type: String,
-        trim: true,
+        trim: true
+    },
+    caption:{
+        type: String,
+        trim: true
+    },
+    comments_count: {
+        type    : int,
+        trim    : true,
+    },
+    like_count: {
+        type    : int,
+        trim    : true,
     }
 }, {
     timestamps: true // ajoute 2 champs au document createdAt et updatedAt

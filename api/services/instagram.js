@@ -4,6 +4,7 @@
 
 const ACCESS_TOKEN = "EAAazsfFwidUBAIOS3VFOjk9jsBVC2wJZCyqwIy69jtJgOUlgFZBJREEVZBnFwxZBiO0k2RrcZAZAIZAmxybpb0XhlKIhcgxQDPyqN9GzQZCHvdj9Khm5cL1HCTtnBRIzBk7x7F2ZAwsFnfmPxFwseLhRHvEFwtblZCpq5ZBCfbKE4N8zzg5BZAA8sZBURHAIzeIBLKETXN5KdG7CN4zH5xbY1IVfxt0ndp7fIRSEgqJaMpZBbNCLml5Cr9WFfPpMj9ZCWaZCkK0ZD";
 var FB = require('fb');
+const post = require('../models/post');
 
 
 
@@ -27,25 +28,39 @@ exports.getById = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
 
-    FB.setAccessToken(ACCESS_TOKEN);
-    FB.api(
-    '17841447861770720?fields=business_discovery.username(medichome_utbm){media_count,media}',
-    'GET',
-    function (response) {
-        console.log(response);
-        response.business_discovery.media.data.forEach(function(element) {
-            console.log(element.id);
-            FB.api(element.id,
-                'GET',
-                //{"fields":"id,ig_id,caption,comments_count,like_count,media_type,media_url,timestamp,username,hidden}"},
-                {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
-                function (content) {
-                    console.log(content);
-                    return res.status(200).json(content);
-                }
-            );
+    try{
+        FB.setAccessToken(ACCESS_TOKEN);
+        FB.api('17841447861770720',
+        {"fields":"business_discovery.username(medichome_utbm){media_count,media}"},
+        'GET',
+        function (response) {
+            console.log(response);
+            response.business_discovery.media.data.forEach(function(element) {
+                console.log(element.id);
+                FB.api(element.id,
+                    'GET',
+                    //{"fields":"id,ig_id,caption,comments_count,like_count,media_type,media_url,timestamp,username,hidden}"},
+                    {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
+                    function (content) {
+
+                        const post = new post({
+                            
+                        });
+                        let result = await post.save();
+                        console.log("Post " + element.id + " saved");
+                        
+                    }
+                );
+            })
         })
-    })
+
+        let result = await post.find({});
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
+    }
 }
 
 /*exports.getAllContentById = async (req, res, next) => {

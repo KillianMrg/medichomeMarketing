@@ -42,13 +42,14 @@ exports.getById = async (req, res, next) => {
 exports.getAll = async (req, res, next) => {
 
     try{
-        FB.setAccessToken(ACCESS_TOKEN);
-        FB.api('17841447861770720',
+        console.log("GetAll");
+        console.log(fbApp.getAccessToken());
+        fbApp.api('/17841447861770720',
         {"fields":"business_discovery.username(medichome_utbm){media_count,media}"},
         'GET',
         function (response) {
             console.log(response);
-            response.business_discovery.media.data.forEach(function(element) {
+            /*response.business_discovery.media.data.forEach(function(element) {
                 console.log(element.id);
                 FB.api(element.id,
                     'GET',
@@ -56,10 +57,16 @@ exports.getAll = async (req, res, next) => {
                     {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
                     function (content) {
 
-                        const post = new post({
-                            
+                        const post = new Post({
+                            id: content.id,
+                            ig_id: content.ig_id,
+                            username: content.username,
+                            titleMarketing: content.titleMarketing,
+                            caption: content.caption,
+                            comments_count: content.comments_count,
+                            like_count: content.like_count
                         });
-                        let result = await post.save();
+                        let result = post.save();
                         console.log("Post " + element.id + " saved");
                         
                     }
@@ -68,7 +75,8 @@ exports.getAll = async (req, res, next) => {
         })
 
         let result = await post.find({});
-        res.status(200).json(result);
+        res.status(200).json(result);*/
+        })
     }
     catch(err){
         console.log(err);

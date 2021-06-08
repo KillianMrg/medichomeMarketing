@@ -2,40 +2,40 @@
 
 // Using ES2015 import through Babel
 
-const Post = require('../models/post');
 
-var {Facebook} = require('fb'),
-fbApp = new Facebook();
+var FB = require('fb');
+const post = require('../models/post');
 
-fbApp.api('oauth/access_token', {
-    client_id: '942304203212690',
-    client_secret: 'a83330503c34ef45580d7d733cd1f3a5',
-    redirect_uri: 'http://80.77.225.39:8067',
-    code: 'code'
-}, function (res) {
-    if(!res || res.error) {
-        console.log(!res ? 'error occurred' : res.error);
-        return;
-    }
- 
-    console.log(res);
-    var accessToken = res.access_token;
-    var expires = res.expires ? res.expires : 0;
-});
-/*fbApp.api('oauth/access_token', {
-    client_id: '942304203212690',
-    client_secret: 'a83330503c34ef45580d7d733cd1f3a5',
-    grant_type: 'client_credentials'
+exports.authentificate = async (req,res,next) => {
+
+    FB.getLoginStatus(function(response) {
+        if(response.status!='connected'){
+            FB.login();
+        }
+        else
+        {
+            FB.setAccessToken(response.accessToken);
+        }
+    });
+
+    /*FB.api('oauth/access_token', {
+        client_id: '942304203212690',
+        client_secret: 'a83330503c34ef45580d7d733cd1f3a5',
+        redirect_uri: 'http://80.77.225.39:8067/api/instagram/authentificate',
+        code: 'code'
     }, function (res) {
         if(!res || res.error) {
             console.log(!res ? 'error occurred' : res.error);
             return;
         }
- 
-        //fbApp.setAccessToken(res.access_token.slice(16));
-        fbApp.setAccessToken("EAANZABUtNh5IBANRAqZAoKpOQ7cd3Q03MavmB7XH1W7R3TWNlg4jJKzfk2hqA7gcHdVHXXHzEnXkj5wkAcZCWb60GHTH5QzjKA8jDmZATKPwRcgxftcvXITMCBZBv3ZA3xgRhAPZCfTPVVF0nnFhMd2YOUuqoVFHdIpjO3z2y3ZCX7nMR99LZCJSTs8ZC1sNjKZBgP8uqEiT1ZAQZBwZDZD");
-    })*/
+    
+        console.log(res);
+        var accessToken = res.access_token;
+        var expires = res.expires ? res.expires : 0;
+        
+    });*/
 
+}
 
 exports.getById = async (req, res, next) => {
     fbApp.setAccessToken(authentificate());

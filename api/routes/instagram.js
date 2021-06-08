@@ -5,6 +5,8 @@ const service = require('../services/instagram');
 
 //router.get('/:id', service.getById);
 
+router.get('/authentificate', service.authentificate)
+
 router.get('/all', service.getAll)
 
 //router.put('/post', service.post);

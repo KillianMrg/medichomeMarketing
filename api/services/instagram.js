@@ -58,9 +58,6 @@ exports.getById = async (req, res, next) => {
 
 
 exports.getAll = async (req, res, next) => {
-    
-
-
     try{
         console.log("GetAll");
         console.log(fbApp.getAccessToken());

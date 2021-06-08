@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const userRoute = require('./user');
+const authRoute = require('./auth');
 const instagramRoute = require('./instagram');
 
 router.get('/', async (req, res) => {
@@ -21,7 +21,7 @@ router.get('/api', async (req, res) => {
   });
 });
 
-router.use('/api/users', userRoute);
+router.use('/api/auth', authRoute);
 router.use('/api/instagram', instagramRoute);
 
 module.exports = router;

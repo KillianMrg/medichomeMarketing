@@ -8,32 +8,6 @@ const post = require('../models/post');
 
 exports.authentificate = async (req,res,next) => {
 
-    FB.getLoginStatus(function(response) {
-        if(response.status!='connected'){
-            FB.login();
-        }
-        else
-        {
-            FB.setAccessToken(response.accessToken);
-        }
-    });
-
-    /*FB.api('oauth/access_token', {
-        client_id: '942304203212690',
-        client_secret: 'a83330503c34ef45580d7d733cd1f3a5',
-        redirect_uri: 'http://80.77.225.39:8067/api/instagram/authentificate',
-        code: 'code'
-    }, function (res) {
-        if(!res || res.error) {
-            console.log(!res ? 'error occurred' : res.error);
-            return;
-        }
-    
-        console.log(res);
-        var accessToken = res.access_token;
-        var expires = res.expires ? res.expires : 0;
-        
-    });*/
 
 }
 

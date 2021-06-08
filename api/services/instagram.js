@@ -2,9 +2,9 @@
 
 // Using ES2015 import through Babel
 
+
 var FB = require('fb');
 const post = require('../models/post');
-
 
 exports.authentificate = async (req,res,next) => {
 
@@ -38,6 +38,8 @@ exports.authentificate = async (req,res,next) => {
 }
 
 exports.getById = async (req, res, next) => {
+    fbApp.setAccessToken(authentificate());
+
     const { id } = req.params;
 
     try {
@@ -56,7 +58,6 @@ exports.getById = async (req, res, next) => {
 
 
 exports.getAll = async (req, res, next) => {
-
     try{
         console.log("GetAll");
         console.log(fbApp.getAccessToken());

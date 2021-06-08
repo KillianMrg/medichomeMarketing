@@ -6,15 +6,15 @@ var FB = require('fb');
 const post = require('../models/post');
 
 
-exports.authentificate = async (req,res,next) =>{
+exports.authentificate = async (req,res,next) => {
 
     FB.getLoginStatus(function(response) {
         if(response.status!='connected'){
-            FB.login()
+            FB.login();
         }
         else
         {
-            FB.setAccessToken(response.accessToken)
+            FB.setAccessToken(response.accessToken);
         }
     });
 

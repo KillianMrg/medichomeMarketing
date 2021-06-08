@@ -2,13 +2,44 @@
 
 // Using ES2015 import through Babel
 
-const ACCESS_TOKEN = "EAAazsfFwidUBAIOS3VFOjk9jsBVC2wJZCyqwIy69jtJgOUlgFZBJREEVZBnFwxZBiO0k2RrcZAZAIZAmxybpb0XhlKIhcgxQDPyqN9GzQZCHvdj9Khm5cL1HCTtnBRIzBk7x7F2ZAwsFnfmPxFwseLhRHvEFwtblZCpq5ZBCfbKE4N8zzg5BZAA8sZBURHAIzeIBLKETXN5KdG7CN4zH5xbY1IVfxt0ndp7fIRSEgqJaMpZBbNCLml5Cr9WFfPpMj9ZCWaZCkK0ZD";
-var FB = require('fb');
-const post = require('../models/post');
+const Post = require('../models/post');
 
+var {Facebook} = require('fb'),
+fbApp = new Facebook();
+
+fbApp.api('oauth/access_token', {
+    client_id: '942304203212690',
+    client_secret: 'a83330503c34ef45580d7d733cd1f3a5',
+    redirect_uri: 'http://80.77.225.39:8067',
+    code: 'code'
+}, function (res) {
+    if(!res || res.error) {
+        console.log(!res ? 'error occurred' : res.error);
+        return;
+    }
+ 
+    console.log(res);
+    var accessToken = res.access_token;
+    var expires = res.expires ? res.expires : 0;
+});
+/*fbApp.api('oauth/access_token', {
+    client_id: '942304203212690',
+    client_secret: 'a83330503c34ef45580d7d733cd1f3a5',
+    grant_type: 'client_credentials'
+    }, function (res) {
+        if(!res || res.error) {
+            console.log(!res ? 'error occurred' : res.error);
+            return;
+        }
+ 
+        //fbApp.setAccessToken(res.access_token.slice(16));
+        fbApp.setAccessToken("EAANZABUtNh5IBANRAqZAoKpOQ7cd3Q03MavmB7XH1W7R3TWNlg4jJKzfk2hqA7gcHdVHXXHzEnXkj5wkAcZCWb60GHTH5QzjKA8jDmZATKPwRcgxftcvXITMCBZBv3ZA3xgRhAPZCfTPVVF0nnFhMd2YOUuqoVFHdIpjO3z2y3ZCX7nMR99LZCJSTs8ZC1sNjKZBgP8uqEiT1ZAQZBwZDZD");
+    })*/
 
 
 exports.getById = async (req, res, next) => {
+    fbApp.setAccessToken(authentificate());
+
     const { id } = req.params;
 
     try {
@@ -27,15 +58,18 @@ exports.getById = async (req, res, next) => {
 
 
 exports.getAll = async (req, res, next) => {
+    
+
 
     try{
-        FB.setAccessToken(ACCESS_TOKEN);
-        FB.api('17841447861770720',
+        console.log("GetAll");
+        console.log(fbApp.getAccessToken());
+        fbApp.api('/17841447861770720',
         {"fields":"business_discovery.username(medichome_utbm){media_count,media}"},
         'GET',
         function (response) {
             console.log(response);
-            response.business_discovery.media.data.forEach(function(element) {
+            /*response.business_discovery.media.data.forEach(function(element) {
                 console.log(element.id);
                 FB.api(element.id,
                     'GET',
@@ -43,10 +77,16 @@ exports.getAll = async (req, res, next) => {
                     {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
                     function (content) {
 
-                        const post = new post({
-                            
+                        const post = new Post({
+                            id: content.id,
+                            ig_id: content.ig_id,
+                            username: content.username,
+                            titleMarketing: content.titleMarketing,
+                            caption: content.caption,
+                            comments_count: content.comments_count,
+                            like_count: content.like_count
                         });
-                        let result = await post.save();
+                        let result = post.save();
                         console.log("Post " + element.id + " saved");
                         
                     }
@@ -55,7 +95,8 @@ exports.getAll = async (req, res, next) => {
         })
 
         let result = await post.find({});
-        res.status(200).json(result);
+        res.status(200).json(result);*/
+        })
     }
     catch(err){
         console.log(err);

@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const postSchema   = mongoose.Schema({
     id: {
-        type    : int,
+        type    : String,
         trim    : true,
     },
     ig_id: {
-        type    : int,
+        type    : String,
         trim    : true,
     },
     username:{
@@ -22,11 +22,11 @@ const postSchema   = mongoose.Schema({
         trim: true
     },
     comments_count: {
-        type    : int,
+        type    : String,
         trim    : true,
     },
     like_count: {
-        type    : int,
+        type    : String,
         trim    : true,
     }
 }, {

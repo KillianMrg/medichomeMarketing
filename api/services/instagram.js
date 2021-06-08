@@ -2,11 +2,24 @@
 
 // Using ES2015 import through Babel
 
-const ACCESS_TOKEN = "EAAazsfFwidUBAIOS3VFOjk9jsBVC2wJZCyqwIy69jtJgOUlgFZBJREEVZBnFwxZBiO0k2RrcZAZAIZAmxybpb0XhlKIhcgxQDPyqN9GzQZCHvdj9Khm5cL1HCTtnBRIzBk7x7F2ZAwsFnfmPxFwseLhRHvEFwtblZCpq5ZBCfbKE4N8zzg5BZAA8sZBURHAIzeIBLKETXN5KdG7CN4zH5xbY1IVfxt0ndp7fIRSEgqJaMpZBbNCLml5Cr9WFfPpMj9ZCWaZCkK0ZD";
 var FB = require('fb');
 const post = require('../models/post');
 
-
+FB.api('oauth/access_token', {
+    client_id: '942304203212690',
+    client_secret: 'a83330503c34ef45580d7d733cd1f3a5',
+    redirect_uri: 'http://80.77.225.39:8067',
+    code: 'code'
+}, function (res) {
+    if(!res || res.error) {
+        console.log(!res ? 'error occurred' : res.error);
+        return;
+    }
+ 
+    console.log(res);
+    var accessToken = res.access_token;
+    var expires = res.expires ? res.expires : 0;
+});
 
 exports.getById = async (req, res, next) => {
     const { id } = req.params;

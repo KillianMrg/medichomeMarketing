@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-
 router.get('/', async (req, res) => {
     res.status(200).json({
         name   : 'API', 
@@ -10,6 +9,7 @@ router.get('/', async (req, res) => {
         message: 'Bienvenue sur medichome !'
     });
 });
+
 router.get('/api', async (req, res) => {
   res.status(200).json({
       name   : 'API', 

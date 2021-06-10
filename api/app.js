@@ -2,14 +2,10 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors         = require('cors');
-var api = require('instagram-node').instagram();
-
-//const indexRouter = require('./routes/index');
+const app = express();
 const mongodb     = require('./db/mongo');
 
 mongodb.initClientDbConnection();
-
-const app = express();
 
 app.use(cors({
     exposedHeaders: ['Authorization'],

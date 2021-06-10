@@ -3,7 +3,7 @@
 // Using ES2015 import through Babel
 
 
-var FB = require('fb');
+var fbApp = require('fb');
 const post = require('../models/post');
 
 exports.authentificate = async (req,res,next) => {
@@ -12,7 +12,7 @@ exports.authentificate = async (req,res,next) => {
 }
 
 exports.getById = async (req, res, next) => {
-    fbApp.setAccessToken(authentificate());
+    fbApp.setAccessToken("IGQVJYbDBOdjRTZAFR5RlhNTnBScF9Pd0ZAITWVjQkJydmdobldwbkhicWpTdVJMNTFWZAkdKcjhpVmpqaDVlb2U4TUF2SE9YRDJON1pjVVJWQXUyb3ZAVbzdwN0dzWkhCZAlI5ZA3lTSkQ1cGVpMnIzSVhSSAZDZD");
 
     const { id } = req.params;
 
@@ -34,8 +34,18 @@ exports.getById = async (req, res, next) => {
 exports.getAll = async (req, res, next) => {
     try{
         console.log("GetAll");
+        fbApp.setAccessToken("EAAHn5HdVw6ABAIczNGL45iJ9marm2mFKqlQOYpoeKko1orllVsvje6HIfnJDhERLC8PnqZCbTg3dYOxjhkNXtxx3TPdFHF6YUUPiiITydj9LkwG9KKPg1WNUBYFDCn9aBNF35nRrQ3P8bB95Px0hiFRRZAGeWC65o22tZA9yivxHS86xLQY0Xq8juk3MeWeWhDKsc4AS82R40FupvgWIn2CNPCPNKScMYyZAn9mKa2SeyBbLUal3");
         console.log(fbApp.getAccessToken());
-        fbApp.api('/17841447861770720',
+
+        fbApp.api(
+            '/17841447861770720',
+            'GET',
+            {"fields":"business_discovery.username(bluebottle){followers_count,media_count}"},
+            function(response) {
+                console.log(response);
+            }
+          );
+        /*fbApp.api('/921570068625876',
         {"fields":"business_discovery.username(medichome_utbm){media_count,media}"},
         'GET',
         function (response) {
@@ -66,8 +76,8 @@ exports.getAll = async (req, res, next) => {
         })
 
         let result = await post.find({});
-        res.status(200).json(result);*/
-        })
+        res.status(200).json(result);
+        })*/
     }
     catch(err){
         console.log(err);

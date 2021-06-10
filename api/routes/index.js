@@ -21,7 +21,7 @@ router.get('/api', async (req, res) => {
   });
 });
 
-router.use('/api/auth', authRoute);
+router.use('/api/auth/instagram', authRoute);
 router.use('/api/instagram', instagramRoute);
 
 module.exports = router;

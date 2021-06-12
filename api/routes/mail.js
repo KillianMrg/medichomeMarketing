@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var instagramRouter = require('./instagram');
-var mailRouter = require('./mail');
+var mailController = require('../service/mail/mail')
 
 router.get('/', async (req, res) => {
     res.status(200).json({

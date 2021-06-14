@@ -7,12 +7,12 @@ fbApp.setAccessToken('EAAazsfFwidUBAJruyvHZB2M9pqwZCtb25e81kQD9MECWkSowgZCbZC8O7
 
 exports.registerPost = (req,res) => {
     try{
-        FB.api('17841447861770720',
+        fbApp.api('17841447861770720',
             {"fields":"business_discovery.username(medichome_utbm){media_count,media}"},
             'GET',
             function (response) {
                 response.business_discovery.media.data.forEach(function(element) {
-                FB.api(element.id,
+                    fbApp.api(element.id,
                     'GET',
                     {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
                     function (content) {

@@ -21,7 +21,7 @@ router.get('/api', async (req, res) => {
   });
 });
 
-router.use('/instagram', instagramRouter);
-router.use('/mail', mailRouter);
+router.use('/api/instagram', instagramRouter);
+router.use('/api/mail', mailRouter);
 
 module.exports = router;

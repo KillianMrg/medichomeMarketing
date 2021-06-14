@@ -1,7 +1,8 @@
+const post = require('../../models/post')
 var FB = require('fb'),
-    fbApp = new FB.Facebook(options);
+    fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAAazsfFwidUBAJruyvHZB2M9pqwZCtb25e81kQD9MECWkSowgZCbZC8O7ZC28PZCq1dsBcyaM2tUrbKfI5Gj9L2oMbij6T3fOSZBEG2p3OTZBu1BRTnymEDEdsjv98cJ5uVKlZACG8ctz2XLcAkJo0qkY5wiWjt3CUZA5m98zZApmwxVp0Wprp82Be2uGn5QQevlZAwjcqglBJH0t5buUr9KAZA8YYneidcAeMMSN8BNo0z8DgmpHkeoTU0LOPc2X1Uj2R4AZD');
+fbApp.setAccessToken('EAADHiUjXdP8BAOxK5vQ0DRZBWRGZAzqPMQfp82zoh4uhsLbzRLfHfo8L6K3AvLC1eZAWxrA5OadccQANAwJZBCnX8GX8L05TlYeTw03PazzbhSsA1MIqzw4ZAuahaEjZACHsnDb6RgsfInF04LWOfFMM1zlcbebb4mrNhNzBe3FF0ZA2HNqttFslzlZB4kCCJqcZAJkGwdTmJHOkwNcxmwAOo');
 
 
 
@@ -11,6 +12,7 @@ exports.registerPost = (req,res) => {
             {"fields":"business_discovery.username(medichome_utbm){media_count,media}"},
             'GET',
             function (response) {
+                res.status(200).json(response);
                 response.business_discovery.media.data.forEach(function(element) {
                     fbApp.api(element.id,
                     'GET',
@@ -26,7 +28,7 @@ exports.registerPost = (req,res) => {
                             comments_count: content.comments_count,
                             like_count: content.like_count                  
                         });
-                        let result = await post.save();
+                        let result =  post.save();
                         console.log("Post " + element.id + " saved");
                         
                     }
@@ -40,7 +42,7 @@ exports.registerPost = (req,res) => {
 }
 
 
-exports.getAll = (req,res) => {
+exports.getAll = async (req,res) => {
 
     try{
 
@@ -55,7 +57,7 @@ exports.getAll = (req,res) => {
     }
 }
 
-exports.getPostById = (req,res) => {
+exports.getPostById = async (req,res) => {
 
     try{
 
@@ -70,7 +72,7 @@ exports.getPostById = (req,res) => {
     }
 }
 
-exports.getPosts = (req,res) => {
+exports.getPosts = async (req,res) => {
 
     try{
 
@@ -96,5 +98,5 @@ exports.getStatistics = (req,res) => {
         {"metric":"engagement,impressions,reach,saved","access_token":"EAAazsfFwidUBAJruyvHZB2M9pqwZCtb25e81kQD9MECWkSowgZCbZC8O7ZC28PZCq1dsBcyaM2tUrbKfI5Gj9L2oMbij6T3fOSZBEG2p3OTZBu1BRTnymEDEdsjv98cJ5uVKlZACG8ctz2XLcAkJo0qkY5wiWjt3CUZA5m98zZApmwxVp0Wprp82Be2uGn5QQevlZAwjcqglBJH0t5buUr9KAZA8YYneidcAeMMSN8BNo0z8DgmpHkeoTU0LOPc2X1Uj2R4AZD"},
         function(response) {
             
-      );
+        });
 }

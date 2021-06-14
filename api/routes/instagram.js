@@ -5,7 +5,7 @@ var postController = require('../service/instagram/post');
 var saveController = require('../service/instagram/save');
 
 
-router.get('/auth', authRouter);
+router.get('/getall', postController.getAll);
 
 
 module.exports = router;

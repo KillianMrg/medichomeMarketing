@@ -3,7 +3,7 @@ const Post = require('../../models/post')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BAP1hAeurAffd56qi1USg2NG4AOUsm1isg8V25tRrh2K2p9I31zFLbi2ouNB9ZB6Drbteu6xviQvEAVZAXZB8Ec82EX8ZCsoeXzjjDXJrHgbSCNAqKuIJwZBxqXTH4GTOwCO4Pn1qyqyhwUvMK00Fkp3f9KXxKIThJM9LFt8ZCKqdBhmGrHBzU4NmMZAfCENn1pZB8wbIOeJg');
+fbApp.setAccessToken('EAADHiUjXdP8BAJfL45QV5FwVTJFUOG8r8Lh6KwYPreP6Vvj5SWSa98V3nG9YnfIQtOZC0BwsRTl8F8YH5C7eJUWOp0pKEwaXy1XaaydX3NZB8MQtnWGn9EbGwureEwrijvaSWiuMYsqj1KBXwhUErjtWnBzO75AbjXDgs0AbQPZBDSG81VDjumdUUJeM6bj1SIE6ducr4vlKh1yPj8N');
 
 registerOne = async (req,res) => {
     try{

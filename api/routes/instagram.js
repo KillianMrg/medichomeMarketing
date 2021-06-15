@@ -1,16 +1,11 @@
-const express = require('express');
-const router = express.Router();
+var express = require('express');
+var router = express.Router();
+var authRouter = require('./auth');
+var postController = require('../service/instagram/post');
+var saveController = require('../service/instagram/save');
 
-const service = require('../services/instagram');
-
-//router.get('/:id', service.getById);
-
-router.get('/all', service.getAll)
-
-//router.put('/save', service.save);
-
-//router.patch('/update', service.update);
-
-//router.delete('/delete', service.delete);
+router.get('/getallposts', postController.getAllPosts);
+router.get('/getpostbyid', postController.getPostById);
+router.get('/getposts', postController.getPosts);
 
 module.exports = router;

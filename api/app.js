@@ -2,14 +2,11 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors         = require('cors');
-const Instagram = require('passport-instagram');
-const passport = require('passport');
-const indexRouter = require('./routes/index');
-const mongodb     = require('./db/mongo');
-mongodb.initClientDbConnection();
 const app = express();
+const mongodb     = require('./db/mongo');
+const indexRouter = require('./routes/index')
 
-const InstagramStrategy = Instagram.Strategy;
+mongodb.initClientDbConnection();
 
 app.use(cors({
     exposedHeaders: ['Authorization'],

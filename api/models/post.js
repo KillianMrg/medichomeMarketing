@@ -1,15 +1,14 @@
 const mongoose = require('mongoose');
 const postSchema = mongoose.Schema({
-    id: String,
-    ig_id: String,
-    username: String,
-    titleMarketing: String,
-    caption: String,
-    comments_count: String,
-    like_count: String
+    id: { type: String },
+    ig_id: { type: String },
+    username: { type: String },
+    caption: { type: String },
+    comments_count: { type: String },
+    like_count: { type: String }
 
 })
 
 
-
-exports.module = mongoose.model('Post', postSchema);
+const Post = mongoose.model('Post', postSchema);
+module.exports = Post;

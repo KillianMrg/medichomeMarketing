@@ -1,38 +1,54 @@
-const post = require('../../models/post')
+const mongoose = require('mongoose')
+const Post = require('../../models/post')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BAOxK5vQ0DRZBWRGZAzqPMQfp82zoh4uhsLbzRLfHfo8L6K3AvLC1eZAWxrA5OadccQANAwJZBCnX8GX8L05TlYeTw03PazzbhSsA1MIqzw4ZAuahaEjZACHsnDb6RgsfInF04LWOfFMM1zlcbebb4mrNhNzBe3FF0ZA2HNqttFslzlZB4kCCJqcZAJkGwdTmJHOkwNcxmwAOo');
+fbApp.setAccessToken('EAADHiUjXdP8BAP1hAeurAffd56qi1USg2NG4AOUsm1isg8V25tRrh2K2p9I31zFLbi2ouNB9ZB6Drbteu6xviQvEAVZAXZB8Ec82EX8ZCsoeXzjjDXJrHgbSCNAqKuIJwZBxqXTH4GTOwCO4Pn1qyqyhwUvMK00Fkp3f9KXxKIThJM9LFt8ZCKqdBhmGrHBzU4NmMZAfCENn1pZB8wbIOeJg');
 
-
-
-exports.registerPost = (req,res) => {
+registerOne = async (req,res) => {
     try{
-        fbApp.api('17841447861770720',
-            {"fields":"business_discovery.username(medichome_utbm){media_count,media}"},
-            'GET',
-            function (response) {
-                res.status(200).json(response);
-                response.business_discovery.media.data.forEach(function(element) {
-                    fbApp.api(element.id,
-                    'GET',
-                    {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
-                    function (content) {
+        await Post.updateOne({ig_id: req.ig_id},
+            {
+                id: req.id,
+                ig_id: req.ig_id, 
+                username: req.username,
+                caption: req.caption,
+                comments_count: req.comments_count,
+                like_count: req.like_count                  
+            },{
+                upsert:true
+            });
+        console.log("Post " + req.id + " saved");
+        
+    }
+    catch(err){
+        console.log(err);
+    }
+}
 
-                        const post = new post({
-                            id: content.id,
-                            ig_id: content.ig_id,
-                            username: content.username,
-                            titleMarketing: content.titleMarketing,
-                            caption: content.caption,
-                            comments_count: content.comments_count,
-                            like_count: content.like_count                  
-                        });
-                        let result =  post.save();
-                        console.log("Post " + element.id + " saved");
-                        
-                    }
-                );
+registerPostById = async (req,res) => {
+    try{
+        await fbApp.api(req.id,
+        'GET',
+        {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
+        function (content) {
+            this.registerOne(content)
+        });
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+
+exports.registerPosts = async (req,res) => {
+    try{
+        await fbApp.api('/17841447865985886/media',
+        'GET',
+        {},
+        function (response) {
+            console.log(response);
+            response.data.forEach(function(element){
+                this.registerPostById(element);
             })
         })
     }
@@ -45,10 +61,11 @@ exports.registerPost = (req,res) => {
 exports.getAll = async (req,res) => {
 
     try{
+        console.log('getAll');
+        await this.registerPosts();
 
-        this.registerPost();
-
-        let result = await post.find({});
+        let result = await Post.find({});
+        console.log(result);
         res.status(200).json(result);
     }
     catch(err){

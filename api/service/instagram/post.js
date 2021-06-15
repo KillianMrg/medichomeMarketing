@@ -58,7 +58,7 @@ exports.registerPosts = async (req,res) => {
 }
 
 
-exports.getAll = async (req,res) => {
+exports.getAllPosts = async (req,res) => {
 
     try{
         console.log('getAll');
@@ -102,18 +102,4 @@ exports.getPosts = async (req,res) => {
         console.log(err);
         res.status(500).json(err);
     }
-}
-
-
-
-
-exports.getStatistics = (req,res) => {
-
-    FB.api(
-        '/17918146075720804/insights',
-        'GET',
-        {"metric":"engagement,impressions,reach,saved","access_token":"EAAazsfFwidUBAJruyvHZB2M9pqwZCtb25e81kQD9MECWkSowgZCbZC8O7ZC28PZCq1dsBcyaM2tUrbKfI5Gj9L2oMbij6T3fOSZBEG2p3OTZBu1BRTnymEDEdsjv98cJ5uVKlZACG8ctz2XLcAkJo0qkY5wiWjt3CUZA5m98zZApmwxVp0Wprp82Be2uGn5QQevlZAwjcqglBJH0t5buUr9KAZA8YYneidcAeMMSN8BNo0z8DgmpHkeoTU0LOPc2X1Uj2R4AZD"},
-        function(response) {
-            
-        });
 }

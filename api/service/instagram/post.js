@@ -3,7 +3,7 @@ const Post = require('../../models/post')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BAJfL45QV5FwVTJFUOG8r8Lh6KwYPreP6Vvj5SWSa98V3nG9YnfIQtOZC0BwsRTl8F8YH5C7eJUWOp0pKEwaXy1XaaydX3NZB8MQtnWGn9EbGwureEwrijvaSWiuMYsqj1KBXwhUErjtWnBzO75AbjXDgs0AbQPZBDSG81VDjumdUUJeM6bj1SIE6ducr4vlKh1yPj8N');
+fbApp.setAccessToken('EAADHiUjXdP8BAP0FkA4PhGqkPBs8gqUg3sgkGuu6VuagEMhaZBgUDlxw01SlfOObz59cutYd3PQsQnOkPz1v6d1EkxTXis74USOZAukW12j4ZCtZB5dFTilwegu47TjL3sJx4bnuPAD7ei6JFLlTWmIxbAisKxGvdWdiV24gRgaRx9a4tDcFfLOXxK5kQHoZAJUIJuI09tfIx5GKHvUoW');
 
 registerOne = async (req,res) => {
     try{
@@ -14,7 +14,10 @@ registerOne = async (req,res) => {
                 username: req.username,
                 caption: req.caption,
                 comments_count: req.comments_count,
-                like_count: req.like_count                  
+                like_count: req.like_count, 
+                media_type: req.media_type,
+                media_url: req.media_url,
+                timestamp: req.timestamp
             },{
                 upsert:true
             });
@@ -30,7 +33,7 @@ registerPostById = async (req,res) => {
     try{
         await fbApp.api(req.id,
         'GET',
-        {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
+        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url"},
         function (content) {
             this.registerOne(content)
         });
@@ -103,3 +106,30 @@ exports.getPosts = async (req,res) => {
         res.status(500).json(err);
     }
 }
+
+
+
+/*FB.api(
+    '/17841447865985886/insights',
+    'GET',
+    {"metric":"impressions, reach, follower_count, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views","period":"day"},
+    function(response) {
+        // Insert your code here
+    }
+  );
+
+  FB.api(
+    '/17841447865985886/insights',
+    'GET',
+    {"metric":"audience_city, audience_country, audience_gender_age, audience_locale","period":"lifetime"},
+    function(response) {
+        // Insert your code here
+    }
+  );
+
+
+//17841447865985886/insights?metric=impressions, reach, follower_count, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views&period=lifetime
+
+
+day: impressions, reach, follower_count, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views&period=lifetime
+lifetime: audience_city, audience_country, audience_gender_age, audience_locale*/

@@ -5,7 +5,10 @@ const postSchema = mongoose.Schema({
     username: { type: String },
     caption: { type: String },
     comments_count: { type: String },
-    like_count: { type: String }
+    like_count: { type: String },
+    timestamp: { type: String },
+    media_type: { type: String },
+    media_url: { type: String }
 
 })
 

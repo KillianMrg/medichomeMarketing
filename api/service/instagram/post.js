@@ -80,7 +80,7 @@ exports.getPostById = async (req,res) => {
 
         this.registerPost();
 
-        let result = await post.find({id: req.id});
+        let result = await post.find({id: req.id });
         res.status(200).json(result);
     }
     catch(err){

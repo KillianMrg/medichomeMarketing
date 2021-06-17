@@ -167,8 +167,8 @@ exports.createPost = (req, res) =>{
 
     try{
         let post = new Post({
-            
-        })
+            caption: req.message,
+        });
 
         let result = await post.save();
         console.log("Post " + result._id + " added");
@@ -197,9 +197,8 @@ exports.readPostSavedById = (req, res) =>{
 exports.updatePost = (req, res) =>{
     try{
         let result = await Post.updateOne({_id: req._id},{
-
-
-        })
+            caption: req.message,
+        });
         console.log("Post " + result._id + " updated");
         res.status(200).json(result);
     }

@@ -1,9 +1,13 @@
 const mongoose = require('mongoose')
 const Post = require('../../models/post')
+const User = require('../../models/user')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BAP0FkA4PhGqkPBs8gqUg3sgkGuu6VuagEMhaZBgUDlxw01SlfOObz59cutYd3PQsQnOkPz1v6d1EkxTXis74USOZAukW12j4ZCtZB5dFTilwegu47TjL3sJx4bnuPAD7ei6JFLlTWmIxbAisKxGvdWdiV24gRgaRx9a4tDcFfLOXxK5kQHoZAJUIJuI09tfIx5GKHvUoW');
+fbApp.setAccessToken('EAADHiUjXdP8BANSSlRXgY1bCs9qLNYFfbgMCoKQEZC51sZBJu2VBY5uBMZA6RsGZBmRt4NwinAujPqmL3dhZBQWjqfIW7449LONm3nyOhZBnrEe25p6fIvrSSwJSwICVIWmz6ArMFbOlZBdnaucp7m4AfkekPXxvqfex8UkgM3r6eicwrPJH0D7TxEnFZAmOSqL6Lwi8rhjK0h5JdMakn2LY');
+
+var instagramID= "17841447865985886";
+
 
 registerOne = async (req,res) => {
     try{
@@ -83,7 +87,7 @@ exports.getPostById = async (req,res) => {
 
         this.registerPost();
 
-        let result = await post.find({id: req.id});
+        let result = await Post.find({id: req.id});
         res.status(200).json(result);
     }
     catch(err){
@@ -98,7 +102,7 @@ exports.getPosts = async (req,res) => {
 
         this.registerPost();
 
-        let result = await post.find({id_id: { $ne: null }});
+        let result = await Post.find({id_id: { $ne: null }});
         res.status(200).json(result);
     }
     catch(err){
@@ -107,7 +111,57 @@ exports.getPosts = async (req,res) => {
     }
 }
 
+exports.getStats = async (req,res) => {
+    try{
+        console.log('User insights');
 
+        await fbApp.api('/17841447865985886/insights',
+        'GET',
+        {"metric":"impressions, reach, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views","period":"day"},
+        function (response) {
+            User.updateOne({id: instagramID},
+            {
+                id: instagramID,
+                impressions: response.data[0].values[0].value,
+                reach: response.data[1].values[0].value, 
+                emailContacts: response.data[2].values[0].value,
+                phoneCallClicks: response.data[3].values[0].value,
+                textMessageClicks: response.data[4].values[0].value,
+                directionsClicks: response.data[5].values[0].value, 
+                websiteClicks: response.data[6].values[0].value,
+                profileViews: response.data[7].values[0].value
+            },{
+                upsert:true
+            });
+        })
+        
+        await fbApp.api(
+            '/17841447865985886',
+            'GET',
+            {"fields":"followers_count,follows_count,media_count"},
+            function(response) {
+                User.updateOne({id: instagramID},
+                {
+                    id: instagramID,
+                    followersCount: response.followers_count,
+                    followsCount: response.follows_count, 
+                    mediaCount: response.media_count
+                },{
+                    upsert:true
+                });
+            }
+          );
+
+        let result = await User.find({id: instagramID});
+        console.log(result);
+        res.status(200).json(result);
+          
+
+    }catch(err){
+        console.log(err);
+
+    }
+}
 
 /*FB.api(
     '/17841447865985886/insights',

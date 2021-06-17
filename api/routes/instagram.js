@@ -7,5 +7,6 @@ var saveController = require('../service/instagram/save');
 router.get('/getallposts', postController.getAllPosts);
 router.get('/getpostbyid', postController.getPostById);
 router.get('/getposts', postController.getPosts);
+router.get('/getstats', postController.getStats);
 
 module.exports = router;

@@ -1,5 +1,3 @@
-const exphbs = require('express-handlebars');
-const path = require('path');
 const nodemailer = require('nodemailer');
 
 exports.sendMail = (req, res) => {

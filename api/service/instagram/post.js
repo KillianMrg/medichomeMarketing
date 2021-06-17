@@ -102,7 +102,7 @@ exports.getPosts = async (req,res) => {
 
         this.registerPost();
 
-        let result = await Post.find({id_id: { $ne: null }});
+        let result = await Post.find({ig_id: { $ne: null }});
         res.status(200).json(result);
     }
     catch(err){
@@ -163,27 +163,65 @@ exports.getStats = async (req,res) => {
     }
 }
 
-/*FB.api(
-    '/17841447865985886/insights',
-    'GET',
-    {"metric":"impressions, reach, follower_count, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views","period":"day"},
-    function(response) {
-        // Insert your code here
+exports.createPost = (req, res) =>{
+
+    try{
+        let post = new Post({
+            
+        })
+
+        let result = await post.save();
+        console.log("Post " + result._id + " added");
+        res.status(200).json(result);
     }
-  );
-
-  FB.api(
-    '/17841447865985886/insights',
-    'GET',
-    {"metric":"audience_city, audience_country, audience_gender_age, audience_locale","period":"lifetime"},
-    function(response) {
-        // Insert your code here
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
     }
-  );
 
 
-//17841447865985886/insights?metric=impressions, reach, follower_count, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views&period=lifetime
+}
+
+exports.readPostsSaved = (req, res) =>{
+
+    let result = await Post.find({ig_id: { $e: null }});
+    res.status(200).json(result);
+
+}
+
+exports.readPostSavedById = (req, res) =>{
+    let result = await Post.find({_id: req._id});
+    res.status(200).json(result);
+}
+
+exports.updatePost = (req, res) =>{
+    try{
+        let result = await Post.updateOne({_id: req._id},{
 
 
-day: impressions, reach, follower_count, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views&period=lifetime
-lifetime: audience_city, audience_country, audience_gender_age, audience_locale*/
+        })
+        console.log("Post " + result._id + " updated");
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
+
+exports.deletePost = (req, res) =>{
+
+    try{
+
+        let result = await Post.remove({_id:req._id});
+        console.log("Post " + result._id + " deleted");
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
+    }
+    
+}
+
+

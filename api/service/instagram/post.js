@@ -82,6 +82,7 @@ exports.getAllPosts = async (req,res) => {
 }
 
 exports.getPostById = async (req,res) => {
+    console.log(req.body);
 
     try{
 

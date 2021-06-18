@@ -4,7 +4,7 @@ const User = require('../../models/user')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BAChRpYkANOzjsGamdwsGfhdu9ZAf9m604PXJpy03FKUVoTBdOdAHCJEEVX6ahdMIYef3TWHZA0RG0gXwFrHPlqjwmhPEtNxjQQHgIZCHwsfGtUlMLfN6bJwC6HTP0Y5cDqTeRbl3WDibJC6RdOXo5trXh9KKDTLqtbFSZCxkXTiZCFWHwHN5EqPZAmZAPsT8DI8vwHqa7TE');
+fbApp.setAccessToken('EAADHiUjXdP8BAHP2STp1f8SiVDgMhDelM8ZCtPRWXshHX4rK1DO7wBmRw88JLE57CKeDLUtIXbP9BESd7ihrZAJ2pg7HtkVktidLnSYwstOuLzTL6XLaviyfj4TQyZBTJBSqBvTiZCkGYENNdThZB4mzLx4MIC8ukjeBciPUZCpowwaYkTbmSE78MjMW8EEZBst9Ul9YDjZA0wQgGnMk0uDs');
 
 var instagramID= "17841447865985886";
 
@@ -21,7 +21,8 @@ registerOne = async (req,res) => {
                 like_count: req.like_count, 
                 media_type: req.media_type,
                 media_url: req.media_url,
-                timestamp: req.timestamp
+                timestamp: req.timestamp,
+                permalink: req.permalink
             },{
                 upsert:true
             });
@@ -37,7 +38,7 @@ registerPostById = async (req,res) => {
     try{
         await fbApp.api(req.id,
         'GET',
-        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url"},
+        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url,permalink"},
         function (content) {
             this.registerOne(content)
         });
@@ -68,11 +69,10 @@ exports.registerPosts = async (req,res) => {
 exports.getAllPosts = async (req,res) => {
 
     try{
-        console.log('getAll');
+        console.log('getAllPosts');
         await this.registerPosts();
 
         let result = await Post.find({});
-        console.log(result);
         res.status(200).json(result);
     }
     catch(err){
@@ -82,11 +82,10 @@ exports.getAllPosts = async (req,res) => {
 }
 
 exports.getPostById = async (req,res) => {
-    console.log(req.body);
-
     try{
 
-        this.registerPost();
+        console.log('getPostById');
+        await this.registerPosts();
 
         let result = await Post.find({id: req.id});
         res.status(200).json(result);
@@ -100,8 +99,8 @@ exports.getPostById = async (req,res) => {
 exports.getPosts = async (req,res) => {
 
     try{
-
-        this.registerPost();
+        console.log('getPosts');
+        await this.registerPosts();
 
         let result = await Post.find({ig_id: { $ne: null }});
         res.status(200).json(result);

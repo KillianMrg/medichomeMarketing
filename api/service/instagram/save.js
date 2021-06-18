@@ -6,11 +6,15 @@ exports.createPost = async (req, res) =>{
 
     try{
         let post = new Post({
-            caption: req.message,
+            caption: req.caption,
+            titlePost: req.titlePost,
+            author: req.author,
+            createTimestamp: req.createTimestamp,
+            status: "saved"
         });
 
         let result = await post.save();
-        console.log("Post " + result._id + " added");
+        console.log("Post " + result._id + " saved");
         res.status(200).json(result);
     }
     catch(err){

@@ -4,7 +4,7 @@ const User = require('../../models/user')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BAChRpYkANOzjsGamdwsGfhdu9ZAf9m604PXJpy03FKUVoTBdOdAHCJEEVX6ahdMIYef3TWHZA0RG0gXwFrHPlqjwmhPEtNxjQQHgIZCHwsfGtUlMLfN6bJwC6HTP0Y5cDqTeRbl3WDibJC6RdOXo5trXh9KKDTLqtbFSZCxkXTiZCFWHwHN5EqPZAmZAPsT8DI8vwHqa7TE');
+fbApp.setAccessToken('EAADHiUjXdP8BADF4IcVmcxTVyZAUe0xH7BuG2BkZCGuFWktLfh2QiEpEyXDXO3paMPCP89XMCppZB8RpZAL4iFjgcJNdfd9YnUil0dwu0Qikn4bNtHMXZCJJEUhc0CpYwF8H6EsXGgk1yABrsUljory4cVDNkr43C70XfoixJr68hZCEUAEq8kRXWrJhuoexnOIWaJuiqc5jEVgnlC82WZA');
 
 var instagramID= "17841447865985886";
 
@@ -21,7 +21,8 @@ registerOne = async (req,res) => {
                 like_count: req.like_count, 
                 media_type: req.media_type,
                 media_url: req.media_url,
-                timestamp: req.timestamp
+                timestamp: req.timestamp,
+                permalink: req.permalink
             },{
                 upsert:true
             });
@@ -37,7 +38,7 @@ registerPostById = async (req,res) => {
     try{
         await fbApp.api(req.id,
         'GET',
-        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url"},
+        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url,permalink"},
         function (content) {
             this.registerOne(content)
         });
@@ -53,7 +54,6 @@ exports.registerPosts = async (req,res) => {
         'GET',
         {},
         function (response) {
-            console.log(response);
             response.data.forEach(function(element){
                 this.registerPostById(element);
             })
@@ -68,11 +68,10 @@ exports.registerPosts = async (req,res) => {
 exports.getAllPosts = async (req,res) => {
 
     try{
-        console.log('getAll');
+        console.log('getAllPosts');
         await this.registerPosts();
 
         let result = await Post.find({});
-        console.log(result);
         res.status(200).json(result);
     }
     catch(err){
@@ -82,13 +81,12 @@ exports.getAllPosts = async (req,res) => {
 }
 
 exports.getPostById = async (req,res) => {
-    console.log(req.body);
-
     try{
 
-        this.registerPost();
+        console.log('getPostById');
+        await this.registerPosts();
 
-        let result = await Post.find({id: req.id});
+        let result = await Post.find({_id: req.body._id});
         res.status(200).json(result);
     }
     catch(err){
@@ -100,10 +98,10 @@ exports.getPostById = async (req,res) => {
 exports.getPosts = async (req,res) => {
 
     try{
+        console.log('getPosts');
+        await this.registerPosts();
 
-        this.registerPost();
-
-        let result = await Post.find({ig_id: { $ne: null }});
+        let result = await Post.find({ig_id: { $exists: true}});
         res.status(200).json(result);
     }
     catch(err){
@@ -111,6 +109,39 @@ exports.getPosts = async (req,res) => {
         res.status(500).json(err);
     }
 }
+
+registerUserStats = async (req, res) =>{
+    await User.updateOne({id: instagramID},
+    {
+        id: instagramID,
+        followersCount: req.followers_count,
+        followsCount: req.follows_count, 
+        mediaCount: req.media_count
+    },{
+        upsert:true
+    });
+}
+
+
+registerInsightsStats = async (req, res) =>{
+    await User.updateOne({id: instagramID},
+    {
+        id: instagramID,
+        impressions: req.data[0].values[0].value,
+        reach: req.data[1].values[0].value, 
+        emailContacts: req.data[2].values[0].value,
+        phoneCallClicks: req.data[3].values[0].value,
+        textMessageClicks: req.data[4].values[0].value,
+        directionsClicks: req.data[5].values[0].value, 
+        websiteClicks: req.data[6].values[0].value,
+        profileViews: req.data[7].values[0].value
+    },{
+        upsert:true
+    });
+}
+
+
+
 
 exports.getStats = async (req,res) => {
     try{
@@ -121,37 +152,18 @@ exports.getStats = async (req,res) => {
             'GET',
             {"fields":"followers_count,follows_count,media_count"},
             function(response) {
-                User.findByIdAndUpdate({id: instagramID},
-                {
-                    id: instagramID,
-                    followersCount: response.followers_count,
-                    followsCount: response.follows_count, 
-                    mediaCount: response.media_count
-                },{
-                    upsert:true
-                });
+                this.registerUserStats(response)
             }
         );
 
-        await fbApp.api('/17841447865985886/insights',
-        'GET',
-        {"metric":"impressions, reach, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views","period":"day"},
-        function (response) {
-            User.findByIdAndUpdate({id: instagramID},
-            {
-                id: instagramID,
-                impressions: response.data[0].values[0].value,
-                reach: response.data[1].values[0].value, 
-                emailContacts: response.data[2].values[0].value,
-                phoneCallClicks: response.data[3].values[0].value,
-                textMessageClicks: response.data[4].values[0].value,
-                directionsClicks: response.data[5].values[0].value, 
-                websiteClicks: response.data[6].values[0].value,
-                profileViews: response.data[7].values[0].value
-            },{
-                upsert:true
-            });
-        })
+        await fbApp.api(
+            '/17841447865985886/insights',
+            'GET',
+            {"metric":"impressions, reach, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views","period":"day"},
+            function (response) {
+                this.registerInsightsStats(response)
+            }
+        )
         
         
 

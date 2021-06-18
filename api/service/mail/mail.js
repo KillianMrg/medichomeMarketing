@@ -14,17 +14,12 @@ const transporter = nodemailer.createTransport({
 });
 
 
-
 exports.sendEmails = (req, res) => {
-
-    console.log(req.body);
 
     try{
 
         if(Array.isArray(req.body.email)){
             req.body.email.forEach(function (element){
-
-                console.log(element);
 
                 const output = `
                     <p>You have a new contact request</p>

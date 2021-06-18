@@ -1,9 +1,13 @@
 const mongoose = require('mongoose')
 const Post = require('../../models/post')
+const User = require('../../models/user')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BAJfL45QV5FwVTJFUOG8r8Lh6KwYPreP6Vvj5SWSa98V3nG9YnfIQtOZC0BwsRTl8F8YH5C7eJUWOp0pKEwaXy1XaaydX3NZB8MQtnWGn9EbGwureEwrijvaSWiuMYsqj1KBXwhUErjtWnBzO75AbjXDgs0AbQPZBDSG81VDjumdUUJeM6bj1SIE6ducr4vlKh1yPj8N');
+fbApp.setAccessToken('EAADHiUjXdP8BAChRpYkANOzjsGamdwsGfhdu9ZAf9m604PXJpy03FKUVoTBdOdAHCJEEVX6ahdMIYef3TWHZA0RG0gXwFrHPlqjwmhPEtNxjQQHgIZCHwsfGtUlMLfN6bJwC6HTP0Y5cDqTeRbl3WDibJC6RdOXo5trXh9KKDTLqtbFSZCxkXTiZCFWHwHN5EqPZAmZAPsT8DI8vwHqa7TE');
+
+var instagramID= "17841447865985886";
+
 
 registerOne = async (req,res) => {
     try{
@@ -14,7 +18,10 @@ registerOne = async (req,res) => {
                 username: req.username,
                 caption: req.caption,
                 comments_count: req.comments_count,
-                like_count: req.like_count                  
+                like_count: req.like_count, 
+                media_type: req.media_type,
+                media_url: req.media_url,
+                timestamp: req.timestamp
             },{
                 upsert:true
             });
@@ -30,7 +37,7 @@ registerPostById = async (req,res) => {
     try{
         await fbApp.api(req.id,
         'GET',
-        {"fields":"id,ig_id,caption,comments_count,like_count,timestamp,username"},
+        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url"},
         function (content) {
             this.registerOne(content)
         });
@@ -80,7 +87,7 @@ exports.getPostById = async (req,res) => {
 
         this.registerPost();
 
-        let result = await post.find({id: req.id });
+        let result = await Post.find({id: req.id});
         res.status(200).json(result);
     }
     catch(err){
@@ -95,7 +102,7 @@ exports.getPosts = async (req,res) => {
 
         this.registerPost();
 
-        let result = await post.find({id_id: { $ne: null }});
+        let result = await Post.find({ig_id: { $ne: null }});
         res.status(200).json(result);
     }
     catch(err){
@@ -103,3 +110,60 @@ exports.getPosts = async (req,res) => {
         res.status(500).json(err);
     }
 }
+
+exports.getStats = async (req,res) => {
+    try{
+        console.log('User insights');
+
+        await fbApp.api(
+            '/17841447865985886',
+            'GET',
+            {"fields":"followers_count,follows_count,media_count"},
+            function(response) {
+                User.findByIdAndUpdate({id: instagramID},
+                {
+                    id: instagramID,
+                    followersCount: response.followers_count,
+                    followsCount: response.follows_count, 
+                    mediaCount: response.media_count
+                },{
+                    upsert:true
+                });
+            }
+        );
+
+        await fbApp.api('/17841447865985886/insights',
+        'GET',
+        {"metric":"impressions, reach, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views","period":"day"},
+        function (response) {
+            User.findByIdAndUpdate({id: instagramID},
+            {
+                id: instagramID,
+                impressions: response.data[0].values[0].value,
+                reach: response.data[1].values[0].value, 
+                emailContacts: response.data[2].values[0].value,
+                phoneCallClicks: response.data[3].values[0].value,
+                textMessageClicks: response.data[4].values[0].value,
+                directionsClicks: response.data[5].values[0].value, 
+                websiteClicks: response.data[6].values[0].value,
+                profileViews: response.data[7].values[0].value
+            },{
+                upsert:true
+            });
+        })
+        
+        
+
+        let result = await User.find({id: instagramID});
+        console.log(result);
+        res.status(200).json(result);
+        
+
+    }catch(err){
+        console.log(err);
+
+    }
+}
+
+
+

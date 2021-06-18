@@ -9,7 +9,7 @@ exports.createPost = async (req, res) =>{
             caption: req.caption,
             titlePost: req.titlePost,
             author: req.author,
-            createTimestamp: req.createTimestamp,
+            createTimestamp: Date.now(),
             status: "saved"
         });
 
@@ -44,7 +44,11 @@ exports.readPostSavedById = async (req, res) =>{
 exports.updatePost = async (req, res) =>{
     try{
         let result = await Post.updateOne({_id: req._id},{
-            caption: req.message,
+            caption: req.caption,
+            titlePost: req.titlePost,
+            authorLastUpdate: req.author,
+            updateTimestamp: Date.now(),
+
         });
         console.log("Post " + result._id + " updated");
         res.status(200).json(result);

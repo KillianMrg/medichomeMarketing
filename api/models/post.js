@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const postSchema = mongoose.Schema({
-    id: { type: String },
-    ig_id: { type: String },
-    username: { type: String },
-    caption: { type: String },
-    comments_count: { type: String },
-    like_count: { type: String },
-    timestamp: { type: String },
-    media_type: { type: String },
-    media_url: { type: String }
+    id: { type: String },               // insta
+    ig_id: { type: String },            // insta
+    username: { type: String },         // insta
+    caption: { type: String },          // insta & sauvegarde
+    comments_count: { type: String },   // insta
+    like_count: { type: String },       // insta
+    timestamp: { type: String },        // insta
+    media_type: { type: String },       // insta
+    media_url: { type: String }         // insta
 
 })
 

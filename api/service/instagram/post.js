@@ -4,7 +4,7 @@ const User = require('../../models/user')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BACFXuhNGr2kGOV4HTpUi1AGwPqq2Q2cVnZBqs5Wh5uFUcWpUjdCtMnOf4gZC7e1FfMYC6ZA7Tdf9rIQAgttZB1fxgIe2MLxZBIH3FiR5aNpcBZCj05Uo1Oe7yBoRoKHcVyFYFrHZCKbGRRzHsyfijiZBZCFbrJEjPbXfwW5T0M08mwzgKv2Sw2WYaTQFjLiDZAZAPwSUX4EY9Nd');
+fbApp.setAccessToken('EAADHiUjXdP8BAKt1yYSXsgYgNwygBZBVZA0SPOBYkZBZCEsUluspbto80IAOrdbjHrfLiPgDe2uCXk3auMEHHFChS0LMaMlQm3Q6ZAHQVSnJdq7OdqWM7d51Od21bGZBlcrijJ2LOpRNDknYbfmw28uxy7ah1ZBiWBxxIRoAVwefPH97IIKFgq3xMCZAcx0qWSrN2prefFg6ClTqWS88vSyg');
 
 var instagramID= "17841447865985886";
 

@@ -4,7 +4,7 @@ const User = require('../../models/user')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BANSSlRXgY1bCs9qLNYFfbgMCoKQEZC51sZBJu2VBY5uBMZA6RsGZBmRt4NwinAujPqmL3dhZBQWjqfIW7449LONm3nyOhZBnrEe25p6fIvrSSwJSwICVIWmz6ArMFbOlZBdnaucp7m4AfkekPXxvqfex8UkgM3r6eicwrPJH0D7TxEnFZAmOSqL6Lwi8rhjK0h5JdMakn2LY');
+fbApp.setAccessToken('EAADHiUjXdP8BAChRpYkANOzjsGamdwsGfhdu9ZAf9m604PXJpy03FKUVoTBdOdAHCJEEVX6ahdMIYef3TWHZA0RG0gXwFrHPlqjwmhPEtNxjQQHgIZCHwsfGtUlMLfN6bJwC6HTP0Y5cDqTeRbl3WDibJC6RdOXo5trXh9KKDTLqtbFSZCxkXTiZCFWHwHN5EqPZAmZAPsT8DI8vwHqa7TE');
 
 var instagramID= "17841447865985886";
 
@@ -115,11 +115,28 @@ exports.getStats = async (req,res) => {
     try{
         console.log('User insights');
 
+        await fbApp.api(
+            '/17841447865985886',
+            'GET',
+            {"fields":"followers_count,follows_count,media_count"},
+            function(response) {
+                User.findByIdAndUpdate({id: instagramID},
+                {
+                    id: instagramID,
+                    followersCount: response.followers_count,
+                    followsCount: response.follows_count, 
+                    mediaCount: response.media_count
+                },{
+                    upsert:true
+                });
+            }
+        );
+
         await fbApp.api('/17841447865985886/insights',
         'GET',
         {"metric":"impressions, reach, email_contacts, phone_call_clicks, text_message_clicks, get_directions_clicks, website_clicks, profile_views","period":"day"},
         function (response) {
-            User.updateOne({id: instagramID},
+            User.findByIdAndUpdate({id: instagramID},
             {
                 id: instagramID,
                 impressions: response.data[0].values[0].value,
@@ -135,27 +152,12 @@ exports.getStats = async (req,res) => {
             });
         })
         
-        await fbApp.api(
-            '/17841447865985886',
-            'GET',
-            {"fields":"followers_count,follows_count,media_count"},
-            function(response) {
-                User.updateOne({id: instagramID},
-                {
-                    id: instagramID,
-                    followersCount: response.followers_count,
-                    followsCount: response.follows_count, 
-                    mediaCount: response.media_count
-                },{
-                    upsert:true
-                });
-            }
-          );
+        
 
         let result = await User.find({id: instagramID});
         console.log(result);
         res.status(200).json(result);
-          
+        
 
     }catch(err){
         console.log(err);
@@ -163,64 +165,5 @@ exports.getStats = async (req,res) => {
     }
 }
 
-exports.createPost = (req, res) =>{
-
-    try{
-        let post = new Post({
-            caption: req.message,
-        });
-
-        let result = await post.save();
-        console.log("Post " + result._id + " added");
-        res.status(200).json(result);
-    }
-    catch(err){
-        console.log(err);
-        res.status(500).json(err);
-    }
-
-
-}
-
-exports.readPostsSaved = (req, res) =>{
-
-    let result = await Post.find({ig_id: { $e: null }});
-    res.status(200).json(result);
-
-}
-
-exports.readPostSavedById = (req, res) =>{
-    let result = await Post.find({_id: req._id});
-    res.status(200).json(result);
-}
-
-exports.updatePost = (req, res) =>{
-    try{
-        let result = await Post.updateOne({_id: req._id},{
-            caption: req.message,
-        });
-        console.log("Post " + result._id + " updated");
-        res.status(200).json(result);
-    }
-    catch(err){
-        console.log(err);
-        res.status(500).json(err);
-    }
-}
-
-exports.deletePost = (req, res) =>{
-
-    try{
-
-        let result = await Post.remove({_id:req._id});
-        console.log("Post " + result._id + " deleted");
-        res.status(200).json(result);
-    }
-    catch(err){
-        console.log(err);
-        res.status(500).json(err);
-    }
-    
-}
 
 

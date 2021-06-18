@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
+    id: { type: String },
     impressions:  { type: String },
     reach:  { type: String },
     emailContacts:  { type: String },
@@ -11,7 +12,6 @@ const userSchema = mongoose.Schema({
     followersCount:  { type: String },
     followsCount:  { type: String },
     mediaCount:  { type: String }
-      
 
 })
 

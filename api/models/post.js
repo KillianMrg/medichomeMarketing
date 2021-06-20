@@ -16,7 +16,12 @@ const postSchema = mongoose.Schema({
     timestamp: { type: String },        // insta
     media_type: { type: String },       // insta
     media_url: { type: String },         // insta
-    permalink: { type: String }         // insta
+    permalink: { type: String },         // insta
+    reach: { type: String },        // insta
+    impressions: { type: String },       // insta
+    engagement: { type: String },         // insta
+    saved: { type: String }         // insta
+
 
 })
 

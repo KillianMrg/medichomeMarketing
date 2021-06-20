@@ -12,7 +12,7 @@ exports.createPost = async (req, res) =>{
             titlePost: req.body.titlepost,
             author: req.body.author,
             createTimestamp: Date.now(),
-            status: "saved"
+            status: "PENDING_PUBLICATION"
         });
 
         let result = await post.save();
@@ -51,7 +51,7 @@ exports.updatePost = async (req, res) =>{
             titlePost: req.body.titlepost,
             authorLastUpdate: req.body.author,
             updateTimestamp: Date.now(),
-
+            status: req.body.status
         });
         console.log("Post " + result._id + " updated");
         res.status(200).json(result);

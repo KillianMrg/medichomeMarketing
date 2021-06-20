@@ -1,32 +1,63 @@
 const mongoose = require('mongoose')
 const Post = require('../../models/post')
+const Comment = require('../../models/comment')
 const User = require('../../models/user')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BACw4Icf74UBEWHoZCZAeN332x8TIauihFNAZA2igtLqfr6Sd6gvPmh9Xrj0KlDtoCtxcnHCYO3REUZCk2NNkn9PZATvNUbZB5ysesJfHv7IivKZAuawPxVBDPbbdP6yUZAXoEGixdJxzppcq1ukdtYGhTFckZA95SBelS5CpXWo9AvZBfSdau4SUVZCZC3yGTNxT40tWleTdot8ZA');
+
+fbApp.setAccessToken('EAADHiUjXdP8BAEY0Pj98GZB0bgzPeB2uSqIDPsHYEyB9UPitSFZBBVXVnLSmQqEwLq9HzG3ZAx6vtgjzqpFdhTuyJWSZCMTERtZA0vSI1UAaG4Mamz7R3cUryhG26EEKO2fDLKIKZA4l7E8JctyZBqZBY8yaLhB4ZAZAZAX9DopaIbtwzbU3tesH2csVTD5yPR7ZA4a7JlJBmXT90n61bWZBJKwv4');
+
 
 
 var instagramID= "17841447865985886";
 
+exports.updateToken = (req,res) => {
+    console.log("updateToken");
+    fbApp.setAccessToken(req.body.token);
+    res.status(200).json();
+}
+
+
+
+registerOneComment = async (req, res) => {
+    await Comment.findOneAndUpdate({id: req.element.id},
+        {
+            mediaId: req._id,
+            id: req.element.id,
+            text: req.element.text,
+            username: req.element.username,
+            timestamp: req.element.timestamp,
+            like_count: req.element.like_count
+        },{
+            upsert:true
+        });
+}
 
 registerOne = async (req,res) => {
     try{
-        await Post.updateOne({ig_id: req.ig_id},
-            {
-                id: req.id,
-                ig_id: req.ig_id, 
-                username: req.username,
-                caption: req.caption,
-                comments_count: req.comments_count,
-                like_count: req.like_count, 
-                media_type: req.media_type,
-                media_url: req.media_url,
-                timestamp: req.timestamp,
-                permalink: req.permalink
-            },{
-                upsert:true
-            });
+        let result = await Post.findOneAndUpdate({ig_id: req.ig_id},
+        {
+            id: req.id,
+            ig_id: req.ig_id, 
+            username: req.username,
+            caption: req.caption,
+            comments_count: req.comments_count,
+            like_count: req.like_count, 
+            media_type: req.media_type,
+            media_url: req.media_url,
+            timestamp: req.timestamp,
+            permalink: req.permalink
+        },{
+            upsert:true
+        });
+        
+        
+        if(typeof req.comments !=='undefined'){
+            req.comments.data.forEach(function(element){
+                this.registerOneComment({_id: result._id, element: element});
+            })
+        }
         console.log("Post " + req.id + " saved");
         
     }
@@ -39,9 +70,9 @@ registerPostById = async (req,res) => {
     try{
         await fbApp.api(req.id,
         'GET',
-        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url,permalink"},
+        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url,permalink,comments.limit(10){text,username,timestamp,like_count,id}"},
         function (content) {
-            this.registerOne(content)
+            this.registerOne(content);
         });
     }
     catch(err){
@@ -103,6 +134,52 @@ exports.getPosts = async (req,res) => {
         await this.registerPosts();
 
         let result = await Post.find({ig_id: { $exists: true}});
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
+
+exports.getComments = async (req,res) => {
+    try{
+
+        console.log('getComments');
+        await this.registerPosts();
+
+        let result = await Comment.find({});
+        console.log(result);
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
+
+exports.getCommentsByMedia = async (req,res) => {
+    try{
+
+        console.log('getCommentsByMedia');
+        await this.registerPosts();
+
+        let result = await Comment.find({mediaId: req.body._id});
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
+
+exports.getCommentById = async (req,res) => {
+    try{
+
+        console.log('getCommentById');
+        await this.registerPosts();
+
+        let result = await Comment.find({_id: req.body._id});
         res.status(200).json(result);
     }
     catch(err){

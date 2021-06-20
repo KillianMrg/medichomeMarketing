@@ -1,17 +1,22 @@
 const mongoose = require('mongoose')
-const Mail = require('../../models/mail')
+const Post = require('../../models/post')
 
 
-exports.createMail = async (req, res) =>{
+exports.createPost = async (req, res) =>{
 
     try{
-        console.log("Create mail");
 
-        let mail = new Mail({
+
+        let post = new Post({
+            caption: req.body.caption,
+            titlePost: req.body.titlepost,
+            author: req.body.author,
+            createTimestamp: Date.now(),
+            status: "PENDING_PUBLICATION"
         });
 
-        let result = await mail.save();
-        console.log("Mail " + req.body._id + " saved");
+        let result = await post.save();
+        console.log("Post " + req.body._id + " saved");
         res.status(200).json(result);
     }
     catch(err){
@@ -22,28 +27,33 @@ exports.createMail = async (req, res) =>{
 
 
 
-exports.readMails = async (req, res) =>{
+exports.readPostsSaved = async (req, res) =>{
 
-    let result = await Mail.find({});
+    let result = await Post.find({ig_id: { $exists: false }});
     res.status(200).json(result);
 
 }
 
 
 
-exports.readMailById = async (req, res) =>{
+exports.readPostSavedById = async (req, res) =>{
     let result = await Post.find({_id: req.body._id});
     res.status(200).json(result);
 }
 
 
 
-exports.updateMail = async (req, res) =>{
+exports.updatePost = async (req, res) =>{
     try{
-        console.log("updateMAil");
-        let result = await Mail.updateOne({_id: req.body._id},{
+        console.log("updatePost");
+        let result = await Post.updateOne({_id: req.body._id},{
+            caption: req.body.caption,
+            titlePost: req.body.titlepost,
+            authorLastUpdate: req.body.author,
+            updateTimestamp: Date.now(),
+            status: req.body.status
         });
-        console.log("Mail " + result._id + " updated");
+        console.log("Post " + result._id + " updated");
         res.status(200).json(result);
     }
     catch(err){
@@ -54,12 +64,12 @@ exports.updateMail = async (req, res) =>{
 
 
 
-exports.deleteMail = async (req, res) =>{
+exports.deletePost = async (req, res) =>{
 
     try{
-        console.log("deleteMail"); 
-        let result = await Mail.remove({_id:req.body._id});
-        console.log("Mail " + result._id + " deleted");
+        console.log("deletePost"); 
+        let result = await Post.remove({_id:req.body._id});
+        console.log("Post " + result._id + " deleted");
         res.status(200).json(result);
     }
     catch(err){
@@ -68,3 +78,5 @@ exports.deleteMail = async (req, res) =>{
     }
     
 }
+
+

@@ -6,10 +6,6 @@ var FB = require('fb'),
     fbApp = new FB.Facebook();
 
 
-fbApp.setAccessToken('EAADHiUjXdP8BAEY0Pj98GZB0bgzPeB2uSqIDPsHYEyB9UPitSFZBBVXVnLSmQqEwLq9HzG3ZAx6vtgjzqpFdhTuyJWSZCMTERtZA0vSI1UAaG4Mamz7R3cUryhG26EEKO2fDLKIKZA4l7E8JctyZBqZBY8yaLhB4ZAZAZAX9DopaIbtwzbU3tesH2csVTD5yPR7ZA4a7JlJBmXT90n61bWZBJKwv4');
-
-
-
 var instagramID= "17841447865985886";
 
 exports.updateToken = (req,res) => {
@@ -36,6 +32,7 @@ registerOneComment = async (req, res) => {
 
 registerOne = async (req,res) => {
     try{
+
         let result = await Post.findOneAndUpdate({ig_id: req.ig_id},
         {
             id: req.id,
@@ -52,13 +49,41 @@ registerOne = async (req,res) => {
             upsert:true
         });
         
-        
         if(typeof req.comments !=='undefined'){
             req.comments.data.forEach(function(element){
                 this.registerOneComment({_id: result._id, element: element});
             })
         }
+
+        await fbApp.api(
+            req.id +'/insights',
+            'GET',
+            {"metric":"reach,saved,impressions,engagement"},
+            function(reponse) {
+                this.registerPostStats({reponse:reponse, ig_id:req.ig_id});
+            }
+        );
+
         console.log("Post " + req.id + " saved");
+        
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+
+registerPostStats = async (req,res) => {
+    try{
+        await Post.findOneAndUpdate({ig_id: req.ig_id},
+        {
+            ig_id: req.ig_id,
+            reach: req.reponse.data[0].values[0].value,
+            saved: req.reponse.data[1].values[0].value,
+            impressions: req.reponse.data[2].values[0].value,
+            engagement: req.reponse.data[3].values[0].value
+        },{
+            upsert:true
+        });
         
     }
     catch(err){
@@ -74,6 +99,7 @@ registerPostById = async (req,res) => {
         function (content) {
             this.registerOne(content);
         });
+        
     }
     catch(err){
         console.log(err);
@@ -188,6 +214,10 @@ exports.getCommentById = async (req,res) => {
     }
 }
 
+
+
+
+
 registerUserStats = async (req, res) =>{
     await User.updateOne({id: instagramID},
     {
@@ -199,7 +229,6 @@ registerUserStats = async (req, res) =>{
         upsert:true
     });
 }
-
 
 registerInsightsStats = async (req, res) =>{
     await User.updateOne({id: instagramID},
@@ -217,9 +246,6 @@ registerInsightsStats = async (req, res) =>{
         upsert:true
     });
 }
-
-
-
 
 exports.getStats = async (req,res) => {
     try{

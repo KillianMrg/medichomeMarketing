@@ -1,33 +1,90 @@
 const mongoose = require('mongoose')
 const Post = require('../../models/post')
+const Comment = require('../../models/comment')
 const User = require('../../models/user')
 var FB = require('fb'),
     fbApp = new FB.Facebook();
 
-fbApp.setAccessToken('EAADHiUjXdP8BAE3pGOsBG1BVMfo4p69dm1p16OqBMtsZAavFfklO3VdgvMyOrtxTcNk1arCX4MHnP8BNQzXquxjmlJ2zZC4cDjNOXh7YibQJHZCriRJuav10J37PNJhhqznVZAdkhyUnTZBLcDm2wkJqQMYxOFb7hiTJnDeybyE7YB2IXqaB1Ec2b93FxzCq6lJx2xO8HepfD0DhwODLx');
-
 
 var instagramID= "17841447865985886";
 
+exports.updateToken = (req,res) => {
+    console.log("updateToken");
+    fbApp.setAccessToken(req.body.token);
+    res.status(200).json();
+}
+
+
+
+registerOneComment = async (req, res) => {
+    await Comment.findOneAndUpdate({id: req.element.id},
+        {
+            mediaId: req._id,
+            id: req.element.id,
+            text: req.element.text,
+            username: req.element.username,
+            timestamp: req.element.timestamp,
+            like_count: req.element.like_count
+        },{
+            upsert:true
+        });
+}
 
 registerOne = async (req,res) => {
     try{
-        await Post.updateOne({ig_id: req.ig_id},
-            {
-                id: req.id,
-                ig_id: req.ig_id, 
-                username: req.username,
-                caption: req.caption,
-                comments_count: req.comments_count,
-                like_count: req.like_count, 
-                media_type: req.media_type,
-                media_url: req.media_url,
-                timestamp: req.timestamp,
-                permalink: req.permalink
-            },{
-                upsert:true
-            });
+
+        let result = await Post.findOneAndUpdate({ig_id: req.ig_id},
+        {
+            id: req.id,
+            ig_id: req.ig_id, 
+            username: req.username,
+            caption: req.caption,
+            comments_count: req.comments_count,
+            like_count: req.like_count, 
+            media_type: req.media_type,
+            media_url: req.media_url,
+            timestamp: req.timestamp,
+            permalink: req.permalink,
+            status: 'PUBLISHED_PUBLICATIONS'
+        },{
+            upsert:true
+        });
+        
+        if(typeof req.comments !=='undefined'){
+            req.comments.data.forEach(function(element){
+                this.registerOneComment({_id: result._id, element: element});
+            })
+        }
+
+        await fbApp.api(
+            req.id +'/insights',
+            'GET',
+            {"metric":"reach,saved,impressions,engagement"},
+            function(reponse) {
+                this.registerPostStats({reponse:reponse, ig_id:req.ig_id});
+            }
+        );
+
         console.log("Post " + req.id + " saved");
+        
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+
+registerPostStats = async (req,res) => {
+    try{
+        await Post.findOneAndUpdate({ig_id: req.ig_id},
+        {
+            ig_id: req.ig_id,
+            reach: req.reponse.data[0].values[0].value,
+            saved: req.reponse.data[1].values[0].value,
+            impressions: req.reponse.data[2].values[0].value,
+            engagement: req.reponse.data[3].values[0].value
+        },{
+            upsert:true
+        });
         
     }
     catch(err){
@@ -39,10 +96,11 @@ registerPostById = async (req,res) => {
     try{
         await fbApp.api(req.id,
         'GET',
-        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url,permalink"},
+        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url,permalink,comments.limit(10){text,username,timestamp,like_count,id}"},
         function (content) {
-            this.registerOne(content)
+            this.registerOne(content);
         });
+        
     }
     catch(err){
         console.log(err);
@@ -111,6 +169,56 @@ exports.getPosts = async (req,res) => {
     }
 }
 
+exports.getComments = async (req,res) => {
+    try{
+
+        console.log('getComments');
+        await this.registerPosts();
+
+        let result = await Comment.find({});
+        console.log(result);
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
+
+exports.getCommentsByMedia = async (req,res) => {
+    try{
+
+        console.log('getCommentsByMedia');
+        await this.registerPosts();
+
+        let result = await Comment.find({mediaId: req.body._id});
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
+
+exports.getCommentById = async (req,res) => {
+    try{
+
+        console.log('getCommentById');
+        await this.registerPosts();
+
+        let result = await Comment.find({_id: req.body._id});
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
+
+
+
+
+
 registerUserStats = async (req, res) =>{
     await User.updateOne({id: instagramID},
     {
@@ -122,7 +230,6 @@ registerUserStats = async (req, res) =>{
         upsert:true
     });
 }
-
 
 registerInsightsStats = async (req, res) =>{
     await User.updateOne({id: instagramID},
@@ -140,9 +247,6 @@ registerInsightsStats = async (req, res) =>{
         upsert:true
     });
 }
-
-
-
 
 exports.getStats = async (req,res) => {
     try{

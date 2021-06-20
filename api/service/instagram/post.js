@@ -6,9 +6,6 @@ var FB = require('fb'),
     fbApp = new FB.Facebook();
 
 
-fbApp.setAccessToken('EAADHiUjXdP8BAK1kLp5XWbqSkZADZASrRclzjn4OFHZCyK0VFlISbC0uCQZCv4a2ig4u5hmZB0AmiWtZCrvcW6cfqwNnMiEwySvcRpxWTGpV1WYZCt3Yh1wEufv5Sq06LKmVaNIOd5JSPoJjEZCyN9BioKQW08fQIvp3QSizPswqbIEvu655YnZCAgaPPM8QqiXCDKXtZAHZCH39ZC2jWl5WGPtY');
-
-
 var instagramID= "17841447865985886";
 
 exports.updateToken = (req,res) => {
@@ -35,7 +32,7 @@ registerOneComment = async (req, res) => {
 
 registerOne = async (req,res) => {
     try{
-        
+
         let result = await Post.findOneAndUpdate({ig_id: req.ig_id},
         {
             id: req.id,

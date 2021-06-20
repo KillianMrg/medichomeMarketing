@@ -18,50 +18,28 @@ services:
   #     - backend_06
   #   restart: unless-stopped
 
-  #backend_06:
-  #  container_name: backend_06
-  #  image: backend_06:1.0.0
-  #  build:
-  #    context: ./api
-  #    dockerfile: Dockerfile
-  #  environment:
-  #    - URL_MONGO=mongodb://api:docker1234@mongodb_06
-  #  ports:
-  #    - 8067:3000
-  #  depends_on:
-  #    - mongodb_06
-  #  restart: unless-stopped
-
-  #mongodb_06:
-  #  container_name: mongodb_06
-  #  image: mongo:latest
-  #  environment: 
-  #    - MONGO_INITDB_ROOT_USERNAME=api
-  #    - MONGO_INITDB_ROOT_PASSWORD=docker1234
-  #  volumes:
-  #    - mongodb_data_06:/data/db
-  #  ports: 
-  #    - 8066:27017
-  #  restart: unless-stopped
-
-  node:
-    image: node:latest
-    volumes:
-      - "./api:/var/www"  
-    ports:
-      - "8081:3000"
-    links:
-      - mongo
-    command: bash -c "cd /var/www && npm install && ./node_modules/.bin/pm2 start startup.json --name API --no-daemon"
+  backend_06:
+    container_name: backend_06
+    image: backend_06:1.0.0
+    build:
+      context: ./api
+      dockerfile: Dockerfile
     environment:
-      - URL_MONGO=mongodb://api:docker1234@mongo
-      
-  mongo:
-    image: mongo:4.0
-    volumes:
-      - "./mongo/data:/data/db"
-    ports: 
-      - "27017:27017"
+      - URL_MONGO=mongodb://api:docker1234@mongodb_06
+    ports:
+      - 8067:3000
+    depends_on:
+      - mongodb_06
+    restart: unless-stopped
+
+  mongodb_06:
+    container_name: mongodb_06
+    image: mongo:latest
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=api
       - MONGO_INITDB_ROOT_PASSWORD=docker1234
+    volumes:
+      - mongodb_data_06:/data/db
+    ports: 
+      - 8066:27017
+    restart: unless-stopped

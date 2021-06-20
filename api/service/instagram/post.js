@@ -44,7 +44,8 @@ registerOne = async (req,res) => {
             media_type: req.media_type,
             media_url: req.media_url,
             timestamp: req.timestamp,
-            permalink: req.permalink
+            permalink: req.permalink,
+            status: 'PUBLISHED_PUBLICATIONS'
         },{
             upsert:true
         });

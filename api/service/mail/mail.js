@@ -82,7 +82,7 @@ exports.sendEmails = (req, res) => {
             // send mail with defined transport object
             transporter.sendMail(mailOptions, (err, info) => {
 
-                console.log('Message sent: %s', info.messageId);   
+                console.log('Message sent');   
 
                 res.status(200).json(info);
             });

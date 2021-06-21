@@ -6,17 +6,17 @@ volumes:
 
 
 services:
-  # frontend_06:
-  #   container_name: frontend_06
-  #   image: frontend_06:1.0.0
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 8068:80
-  #   depends_on:
-  #     - backend_06
-  #   restart: unless-stopped
+  frontend_06:
+    container_name: frontend_06
+    image: frontend_06:1.0.0
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 8068:80
+    depends_on:
+      - backend_06
+    restart: unless-stopped
 
   backend_06:
     container_name: backend_06

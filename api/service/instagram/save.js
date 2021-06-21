@@ -12,7 +12,7 @@ exports.createPost = async (req, res) =>{
             titlePost: req.body.titlepost,
             author: req.body.author,
             createTimestamp: Date.now(),
-            status: "PENDING_PUBLICATION"
+            status: "PENDING_PUBLICATIONS"
         });
 
         let result = await post.save();

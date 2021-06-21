@@ -1,0 +1,47 @@
+.inner-content {
+    position: relative;
+    padding-bottom: 24px;
+    padding-top: 0px;
+    background: #fff;
+    height: 100%;
+  }
+
+  .rowLine {
+    height: 5px;
+    background:#01a897;
+  }
+  
+  .rowHeader {
+    height: 5%;
+    text-align: center;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+  
+  .rowHeaderTitle {
+    font-weight: bold;
+    color: white;
+    background:#01a897;
+  }
+
+  .form_container{
+    padding:20px;
+  }
+
+.button_container button{
+  margin:10px;
+  float:left;
+}
+
+.select{
+  width:30%;
+  margin-right:3%;
+}
+
+.mail_content_box{
+  height:300px;
+}
+
+.date_picker{
+  margin-left:10px;
+}

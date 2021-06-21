@@ -1,0 +1,69 @@
+<nz-layout class="layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+
+    <div class="sidebar-logo">
+      <a href="https://www.instagram.com/medichome_utbm/" target="_blank">
+        <img src="../assets/MedicHome.png" alt="logo">
+        <h1>Toolbox</h1>
+      </a>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-menu-item>
+        <i nz-icon nzType="home-fill"><a routerLink="/home"></a></i>
+        <span>Home </span>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Social networks" nzIcon="appstore-fill">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <i nz-icon nzType="instagram" nzTheme="fill"></i>
+            <a routerLink="/socialNetworks/instagram/home">Instagram</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <i nz-icon nzType="facebook" nzTheme="fill"></i>
+            <a routerLink="/facebook">Facebook</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <i nz-icon nzType="linkedin" nzTheme="fill"></i>
+            <a routerLink="/socialNetworks/linkedin/home">Linkedin</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="mail-fill"><a routerLink="/emailing"></a></i>
+        <span>Emailing </span>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="area-chart"><a routerLink="/customerAnalysis"></a></i>
+        <span>Customer analysis </span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+          <i class="trigger"
+             nz-icon
+             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+        </span>
+        <span class="header-title-left">MedicHome </span>
+        <span class="header-title-right">Marketing </span>
+      </div>
+    </nz-header>
+    
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer>MedicHome Marketing ©2021 - UTBM Project </nz-footer>
+  </nz-layout>
+</nz-layout>
+
+

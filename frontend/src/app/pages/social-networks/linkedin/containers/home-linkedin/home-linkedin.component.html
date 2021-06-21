@@ -1,0 +1,39 @@
+<!-- Menu -->
+<app-menu></app-menu>
+
+<div class="content">
+  <!-- Titre des parties -->
+  <div nz-row class="rowTitle">
+    <div class="titleContent" nz-col nzSpan="12" nzOffset="0">
+      <h1 class="rowTitleText" nz-typography>Published publications</h1>
+    </div>
+    <div class="titleContent" nz-col nzSpan="11" nzOffset="1">
+      <h1 class="rowTitleText" nz-typography>Statistics</h1>
+    </div>
+  </div>
+
+  <!-- Contenu des parties -->
+  <div class="rowContent" nz-row>
+    <div nz-col nzSpan="12" nzOffset="0">
+      <app-post-table></app-post-table>
+    </div>
+    <div nz-col nzSpan="11" nzOffset="1">
+      <div nz-col nzSpan="24">
+        <app-statistic-table></app-statistic-table> <!-- * -->
+      </div>
+      <div nz-col nzSpan="24">
+        <nz-row [nzGutter]="16">
+          <nz-col [nzSpan]="12">
+            <nz-statistic [nzValue]=" (1128 | number)!" [nzTitle]="'Publications in progress'" [nzPrefix]="prefixTpl1"></nz-statistic>
+            <ng-template #prefixTpl1><i nz-icon nzType="edit" nzTheme="fill"></i></ng-template>
+          </nz-col>
+          <nz-col [nzSpan]="12">
+            <nz-statistic [nzValue]="(1128 | number)!" [nzTitle]="'Programmed publications'" [nzPrefix]="prefixTpl2"></nz-statistic>
+            <ng-template #prefixTpl2><i nz-icon [nzType]="'loading'" [nzSpin]="true"></i></ng-template>
+          </nz-col>
+        </nz-row>
+        <nz-divider></nz-divider>
+      </div>
+    </div>
+  </div>
+</div>

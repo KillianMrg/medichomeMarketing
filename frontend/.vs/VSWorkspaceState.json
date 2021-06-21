@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\pages",
+    "\\src\\app\\pages\\social-networks",
+    "\\src\\app\\pages\\social-networks\\instagram",
+    "\\src\\app\\pages\\social-networks\\instagram\\containers",
+    "\\src\\app\\pages\\social-networks\\instagram\\containers\\list-of-publications-instagram",
+    "\\src\\app\\pages\\social-networks\\instagram\\containers\\new-post-instagram",
+    "\\src\\app\\pages\\social-networks\\instagram\\containers\\publication"
+  ],
+  "SelectedNode": "\\src\\app\\pages\\social-networks\\instagram\\containers\\list-of-publications-instagram\\list-of-publications-instagram.component.html",
+  "PreviewInSolutionExplorer": false
+}

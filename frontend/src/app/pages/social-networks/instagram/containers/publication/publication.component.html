@@ -1,0 +1,53 @@
+<!-- Menu -->
+<app-menu></app-menu>
+<div class="content">
+  <nz-spin style="margin-top: 50px;" nzTip="Loading..." [nzSize]="'large'" nzSpinning="{{spinner}}"></nz-spin>
+  <!-- Titre des parties -->
+  <div *ngIf="spinner == false">
+    <div nz-row nzJustify="center" nzAlign="top" class="rowTitle">
+      <div class="titleContent" nz-col nzSpan="8" nzOffset="0">
+        <div nz-row>
+          <div nz-col nzSpan="5" nzOffset="0">
+            <img style="width: 400%;" class="image" alt="logo" src="{{listOfData[0].media_url}}" />
+          </div>
+        </div>
+      </div>
+
+      <div class="titleContent" nz-col nzSpan="15">
+        <div style="width:100%" nz-row>
+          <nz-col [nzSpan]="24">
+            <div class="description">
+              <nz-descriptions style="width: 100%;" nzTitle="Informations" nzBordered nzLayout="vertical" nzSize="small">
+                <nz-descriptions-item [nzSpan]="2" nzTitle="Caption">"{{listOfData[0].caption}}"</nz-descriptions-item>
+                <nz-descriptions-item [nzSpan]="2" nzTitle="Media type">{{listOfData[0].media_type}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Status">N/A</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Author">{{listOfData[0].author}} <br />{{listOfData[0].timestamp}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Last update">
+                  {{listOfData[0].authorLastUpdate}}<br />{{listOfData[0].updateTimestamp}}
+                </nz-descriptions-item>
+              </nz-descriptions>
+            </div>
+          </nz-col>
+          <nz-divider></nz-divider>
+          <nz-col [nzSpan]="12">
+            <div class="description">
+              <nz-descriptions style="width: 100%;" nzTitle="Statistics" nzBordered nzLayout="vertical" nzSize="small">
+                <nz-descriptions-item nzTitle="Like count">{{listOfData[0].like_count}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Comments count">{{listOfData[0].comments_count}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Engagement">{{listOfData[0].like_count}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="impressions">{{listOfData[0].impressions}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Reach"> {{listOfData[0].reach}} </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Saved"> {{listOfData[0].saved}} </nz-descriptions-item>
+              </nz-descriptions>
+            </div>
+          </nz-col>
+          <nz-col [nzSpan]="11" nzOffset="1">
+            <h3><b>Comments</b></h3>
+            <app-comments></app-comments>
+          </nz-col>
+        </div>
+
+      </div>
+    </div>
+  </div>
+

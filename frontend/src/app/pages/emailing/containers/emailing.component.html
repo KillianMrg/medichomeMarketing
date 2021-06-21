@@ -1,0 +1,115 @@
+<nz-modal [(nzVisible)]="modalIsVisible" nzTitle="Envoyer plus tard" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <p>Date d'envoi : 
+            <nz-date-picker class="date_picker"></nz-date-picker>
+        </p>
+    </ng-container>
+</nz-modal>
+
+<div class="inner-content">
+
+    <div class="rowLine"></div>
+  
+    <div nz-row class="rowHeader">
+      <div nz-col nzSpan="3" nzOffset="21" >
+        <h2 nz-typography class="rowHeaderTitle">Emailing</h2>
+      </div>
+    </div>
+
+    <div nz-row>
+        <div nz-col nzSpan="12" nzOffset="0" class="form_container">
+            <h1 class="rowTitleText" nz-typography>Ecrire un nouveau mail</h1><br>
+
+            <input nz-input placeholder="Email" #fieldEmail/><br><br>
+            <input nz-input placeholder="Nom" #fieldName/><br><br>
+            <input nz-input placeholder="Entreprise" #fieldCompany/><br><br>
+            <input nz-input placeholder="Telephone" #fieldPhone/><br><br>
+
+            <nz-input-group class="ant-input-affix-wrapper-textarea-with-clear-btn">
+                <textarea nz-input placeholder="Message" class="mail_content_box" #fieldMessage></textarea>
+            </nz-input-group><br>
+
+            <div class="button_container">
+                <button nz-button nzType="primary" (click)="sendNow()">Envoyer maintenant</button>
+                <button nz-button nzType="default" (click)="showModal()">Envoyer plus tard</button>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div nz-col nzSpan="12" nzOffset="0" class="form_container">
+            <h2 class="rowTitleText" nz-typography>Destinataires</h2><br>
+
+            <p>Filtres : </p>
+
+            <nz-select ngModel="chooseAge" class="select">
+                <nz-option nzValue="- de 18" nzLabel="- de 18"></nz-option>
+                <nz-option nzValue="18-25" nzLabel="18-25"></nz-option>
+                <nz-option nzValue="25-35" nzLabel="25-35"></nz-option>
+                <nz-option nzValue="35-45" nzLabel="35-45"></nz-option>
+                <nz-option nzValue="45-60" nzLabel="45-60"></nz-option>
+                <nz-option nzValue="60+" nzLabel="60+"></nz-option>
+            </nz-select>
+
+            <nz-select ngModel="chooseGender" class="select">
+                <nz-option nzValue="man" nzLabel="Homme"></nz-option>
+                <nz-option nzValue="woman" nzLabel="Femme"></nz-option>
+            </nz-select>
+
+            <nz-select ngModel="chooseRegion" class="select">
+                <nz-option nzValue="auvergne-rhone-alpes" nzLabel="Auvergne-Rhône-Alpes"></nz-option>
+                <nz-option nzValue="bourgogne-franche-comte" nzLabel="Bourgogne-Franche-Comté"></nz-option>
+                <nz-option nzValue="bretagne" nzLabel="Bretagne"></nz-option>
+                <nz-option nzValue="centre-val-de-loire" nzLabel="Centre-Val de Loire"></nz-option>
+                <nz-option nzValue="corse" nzLabel="Corse"></nz-option>
+                <nz-option nzValue="grand-est" nzLabel="Grand Est"></nz-option>
+                <nz-option nzValue="hauts-de-france" nzLabel="Hauts-de-France"></nz-option>
+                <nz-option nzValue="ile-de-france" nzLabel="Île-de-France"></nz-option>
+                <nz-option nzValue="normandie" nzLabel="Normandie"></nz-option>
+                <nz-option nzValue="nouvelle-aquitaine" nzLabel="Nouvelle-Aquitaine"></nz-option>
+                <nz-option nzValue="occitanie" nzLabel="Occitanie"></nz-option>
+                <nz-option nzValue="pays-de-la-loire" nzLabel="Pays de la Loire"></nz-option>
+                <nz-option nzValue="provence-alpes-cote-azur" nzLabel="Provence-Alpes-Côte d'Azur"></nz-option>
+            </nz-select>
+            <br><br>
+
+            <p>Résultats :</p>
+
+            <nz-table
+                #rowSelectionTable
+                nzShowPagination
+                nzShowSizeChanger
+                [nzData]="listOfClientFilter"
+                (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+                >
+                <thead>
+                    <tr>
+                    <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+                    <th>Nom</th>
+                    <th>Genre</th>
+                    <th>Date de naissance</th>
+                    <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let client of rowSelectionTable.data">
+                    <td
+                        [nzChecked]="setOfCheckedId.has(client.id)"
+                        [nzDisabled]="client.selected"
+                        (nzCheckedChange)="onItemChecked(client.id, $event)"
+                    ></td>
+                    <td>{{ client.name }}</td>
+                    <td>{{ client.gender }}</td>
+                    <td>{{ client.age }}</td>
+                    <td>{{ client.email }}</td>
+                    </tr>
+                </tbody>
+            </nz-table><br><br>
+
+        </div>
+    </div>
+
+</div>

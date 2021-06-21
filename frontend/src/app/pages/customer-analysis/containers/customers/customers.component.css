@@ -1,0 +1,39 @@
+.content {
+  height: 88%;
+  margin-top: 24px;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.table-operations {
+  margin-top: 1%;
+  margin-bottom: 16px;
+}
+
+  .table-operations > button {
+    margin: 1px;
+    margin-right: 8px;
+  }
+
+.search-box {
+  padding: 8px;
+}
+
+  .search-box input {
+    width: 188px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .search-box button {
+    width: 90px;
+  }
+
+.search-button {
+  margin-right: 8px;
+}
+
+.table {
+    height: 80%;
+  margin-bottom: 1%;
+}

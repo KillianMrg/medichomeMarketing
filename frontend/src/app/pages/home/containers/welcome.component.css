@@ -1,0 +1,93 @@
+.inner-content {
+    position: relative;
+    padding-bottom: 24px;
+    padding-top: 0px;
+    background: #fff;
+    height: 100%;
+  }
+
+  .rowLine {
+    height: 5px;
+    background:#01a897;
+  }
+  
+  .rowHeader {
+    height: 5%;
+    text-align: center;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+  
+  .rowHeaderTitle {
+    font-weight: bold;
+    color: white;
+    background:#01a897;
+  }
+
+  .rowTitle{
+    background:#01a897;
+  }
+
+  .section{
+    border-bottom:1px solid lightgray;
+    margin:10px;
+    margin-bottom:40px;
+  }
+
+  .section h3{
+    margin:5px;
+    margin-left:20px;
+    color:white;
+    font-weight: bold;
+  }
+
+  .section div{
+    /*border:1px solid black;*/
+  }
+
+  .open_btn{
+    position:relative;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+  }
+
+  .stats-section{
+    /*background:#ececec;*/
+    border-radius:6px;
+    width:90px;
+    height:90px;
+    position:relative;
+    margin:15px;
+    border-bottom:2px solid #01a897;
+  }
+
+  .stats-container{
+    display: flex;
+    direction: row;
+    flex-wrap: wrap;
+  }
+
+  .stats-container p{
+    width:100%;
+    text-align: center;
+    font-size: 30px;
+    margin:0;
+  }
+
+  .stats-container span{
+    position:absolute;
+    width:100%;
+    text-align: center;
+    bottom:10px;
+    font-weight: bold;
+  }
+
+  .stats-section-small-text{
+    font-size:12px;
+  }
+
+  .rowTitleText {
+    font-weight: bold;
+    margin-left: 20px;
+  }

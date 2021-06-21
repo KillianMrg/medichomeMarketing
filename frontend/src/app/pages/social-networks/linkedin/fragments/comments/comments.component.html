@@ -1,0 +1,10 @@
+<cdk-virtual-scroll-viewport itemSize="73" class="container">
+  <nz-list nzItemLayout="vertical">
+    <nz-list-item class="item" *cdkVirtualFor="let comment of comments">
+      <nz-list-item-meta-description>
+        {{comment.text}}
+      </nz-list-item-meta-description>
+    </nz-list-item>
+  </nz-list>
+</cdk-virtual-scroll-viewport>
+

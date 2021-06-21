@@ -1,0 +1,206 @@
+INSTAGRAM ID: 17841447861770720
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Sample Request with Field Expansion:
+
+curl -i -X GET \
+ "https://graph.facebook.com/v10.0/17841447861770720?fields=business_discovery.username(medichome_utbm)%7Bfollowers_count%2Cmedia_count%7D&access_token="
+
+FB.api(
+  '/17841447861770720',
+  'GET',
+  {"fields":"business_discovery.username(bluebottle){followers_count,media_count}"},
+  function(response) {
+      // Insert your code here
+  }
+);
+
+RETOUR:
+-------
+
+FB.api(
+  '/17841447861770720',
+  'GET',
+  {"fields":"business_discovery.username(medichome_utbm){followers_count,media_count}"},
+  function(response) {
+      // Insert your code here
+  }
+);
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Liste des publications du profile:
+
+curl -i -X GET \
+ "https://graph.facebook.com/v10.0/17841447861770720?fields=business_discovery.username(medichome_utbm)%7Bmedia%7Bcomments_count%2Clike_count%7D%7D&access_token="
+
+FB.api(
+  '/17841447861770720',
+  'GET',
+  {"fields":"business_discovery.username(medichome_utbm){media{comments_count,like_count}}"},
+  function(response) {
+      // Insert your code here
+  }
+);
+
+RETOUR:
+-------
+
+{
+  "business_discovery": {
+    "media": {
+      "data": [
+        {
+          "comments_count": 0,
+          "like_count": 3,
+          "id": "17918146075720804"
+        },
+        {
+          "comments_count": 0,
+          "like_count": 2,
+          "id": "17931817972530252"
+        },
+        {
+          "comments_count": 0,
+          "like_count": 1,
+          "id": "17876960507362372"
+        }
+      ]
+    },
+    "id": "17841447861770720"
+  },
+  "id": "17841447861770720"
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Informations sur un post précis
+
+curl -i -X GET \
+ "https://graph.facebook.com/v10.0/17876960507362372?fields=caption%2Ccomments_count%2Cid%2Cig_id%2Cis_comment_enabled%2Clike_count%2Cmedia_product_type%2Cmedia_type%2Cmedia_url%2Cowner%2Cpermalink%2Cshortcode%2Cthumbnail_url%2Ctimestamp%2Cusername%2Ccomments.limit(10)%7Buser%2Ctext%2Cusername%2Ctimestamp%2Cmedia%2Clike_count%2Cid%2Creplies.limit(10)%7Bmedia%2Clike_count%2Ctext%2Cusername%2Cuser%2Ctimestamp%7D%2Chidden%7D&access_token="
+
+FB.api(
+  '/17876960507362372',
+  'GET',
+  {"fields":"caption,comments_count,id,ig_id,is_comment_enabled,like_count,media_product_type,media_type,media_url,owner,permalink,shortcode,thumbnail_url,timestamp,username,comments.limit(10){user,text,username,timestamp,media,like_count,id,replies.limit(10){media,like_count,text,username,user,timestamp},hidden}","access_token":"EAAazsfFwidUBAMl8t9fpTZBR3oQEkgHyQZA08niNafOiWHcYIxRVR2s1QBFnhf0sINLpuqCMFYJh7FNIl6mqyWUlZBa0ZBPmAb9oB8tZBZAcYNrWShLnUOogS4DhJm3J5XjgoDYtHCrPzrx4QdMhmdl9OtS3HwwGMle7hFjDIiDgPUOA3Qh0qj903mNBS9IDRV0bC3hoZBZBegZDZD"},
+  function(response) {
+      // Insert your code here
+  }
+);
+
+{
+  "caption": "Welcome !! !! @utbm #santé",
+  "comments_count": 2,
+  "id": "17876960507362372",
+  "ig_id": "2572035674549891481",
+  "is_comment_enabled": true,
+  "like_count": 2,
+  "media_product_type": "FEED",
+  "media_type": "IMAGE",
+  "media_url": "https://scontent-cdt1-1.cdninstagram.com/v/t51.29350-15/185831565_539730684098678_954638435514600932_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=8ae9d6&_nc_ohc=vMe1sDsp3i0AX9sjvy6&_nc_ht=scontent-cdt1-1.cdninstagram.com&oh=1af066c72762ea7a4da77fd7f6c5f782&oe=60C4A384",
+  "owner": {
+    "id": "17841447861770720"
+  },
+  "permalink": "https://www.instagram.com/p/COxtNGbLbGZ/",
+  "shortcode": "COxtNGbLbGZ",
+  "timestamp": "2021-05-12T14:42:47+0000",
+  "username": "medichome_utbm",
+  "comments": {
+    "data": [
+      {
+        "text": "First picture",
+        "username": "alexandre.dhe",
+        "timestamp": "2021-05-15T13:19:02+0000",
+        "media": {
+          "id": "17876960507362372"
+        },
+        "like_count": 0,
+        "id": "17883674366168038",
+        "replies": {
+          "data": [
+            {
+              "media": {
+                "id": "17876960507362372"
+              },
+              "like_count": 0,
+              "text": "@alexandre.dhe exactement",
+              "username": "alexandre.dhe",
+              "timestamp": "2021-05-15T13:19:18+0000",
+              "id": "17883241052183980"
+            }
+          ]
+        },
+        "hidden": false
+      }
+    ]
+  }
+}
+
+
+statistics:
+
+ curl -i -X GET \
+ "https://graph.facebook.com/v10.0/17918146075720804/insights?metric=engagement%2Cimpressions%2Creach%2Csaved&access_token="
+
+ FB.api(
+  '/17918146075720804/insights',
+  'GET',
+  {"metric":"engagement,impressions,reach,saved","access_token":"EAAazsfFwidUBAJruyvHZB2M9pqwZCtb25e81kQD9MECWkSowgZCbZC8O7ZC28PZCq1dsBcyaM2tUrbKfI5Gj9L2oMbij6T3fOSZBEG2p3OTZBu1BRTnymEDEdsjv98cJ5uVKlZACG8ctz2XLcAkJo0qkY5wiWjt3CUZA5m98zZApmwxVp0Wprp82Be2uGn5QQevlZAwjcqglBJH0t5buUr9KAZA8YYneidcAeMMSN8BNo0z8DgmpHkeoTU0LOPc2X1Uj2R4AZD"},
+  function(response) {
+      // Insert your code here
+  }
+);
+
+{
+  "data": [
+    {
+      "name": "engagement",
+      "period": "lifetime",
+      "values": [
+        {
+          "value": 3
+        }
+      ],
+      "title": "Interaction",
+      "description": "Nombre total de mentions J’aime et de commentaires sur le média",
+      "id": "17918146075720804/insights/engagement/lifetime"
+    },
+    {
+      "name": "impressions",
+      "period": "lifetime",
+      "values": [
+        {
+          "value": 49
+        }
+      ],
+      "title": "Impressions",
+      "description": "Nombre total de fois où le média a été vu",
+      "id": "17918146075720804/insights/impressions/lifetime"
+    },
+    {
+      "name": "reach",
+      "period": "lifetime",
+      "values": [
+        {
+          "value": 45
+        }
+      ],
+      "title": "Couverture",
+      "description": "Nombre total de comptes uniques ayant vu le média",
+      "id": "17918146075720804/insights/reach/lifetime"
+    },
+    {
+      "name": "saved",
+      "period": "lifetime",
+      "values": [
+        {
+          "value": 0
+        }
+      ],
+      "title": "Enregistré",
+      "description": "Nombre total de comptes uniques ayant enregistré le média",
+      "id": "17918146075720804/insights/saved/lifetime"
+    }
+  ]
+}

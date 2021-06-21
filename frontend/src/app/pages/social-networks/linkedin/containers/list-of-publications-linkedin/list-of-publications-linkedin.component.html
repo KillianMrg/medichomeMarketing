@@ -1,0 +1,55 @@
+<!-- Menu -->
+<app-menu></app-menu>
+
+<div class="content">
+  <nz-table class="table" #nzTable #filterTable [nzData]="listOfDisplayData" nzTableLayout="fixed" nzSize="small" [nzPageSize]="3">
+    <thead>
+      <tr>
+        <th nzCustomFilter>
+          Title
+          <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+        </th>
+        <th>Picture</th>
+        <th *ngFor="let column of listOfColumns; trackBy: trackByName"
+            [(nzSortOrder)]="column.sortOrder"
+            [nzSortFn]="column.sortFn"
+            [nzFilters]="column.listOfFilter"
+            [nzFilterFn]="column.filterFn">
+          {{ column.name }}
+        </th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of filterTable.data">
+        <td><b>{{ data.title }}</b></td>
+        <td><img style="width: 50%;" class="image" alt="logo" src="{{data.picture}}" /></td>
+        <td><b>{{ data.status }}</b></td>
+        <td><b>{{ data.creationDate }}</b></td>
+        <td><b>{{ data.lastModifications }}</b></td>
+        <td>
+          <button nz-button nzType="primary" class="search-button" nzSize="large">
+            <i nz-icon nzType="eye" nzTheme="outline"></i>
+          </button>
+          <button *ngIf="data.status == 'PENDING_PUBLICATIONS' " nz-button  nzType="dashed" (click)="search()" class="search-button" nzSize="large">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+        </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search title" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

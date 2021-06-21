@@ -1,0 +1,22 @@
+<cdk-virtual-scroll-viewport itemSize="73" class="container">
+  <nz-list nzItemLayout="vertical">
+    <nz-list-item class="item" *cdkVirtualFor="let publishedPublication of publishedPublications">
+      <nz-list-item-meta class="itemTitleDescription">
+        <nz-list-item-meta-avatar nzSrc="../../../../assets/MedicHome.png"> </nz-list-item-meta-avatar>
+        <nz-list-item-meta-title>
+          <a href="../../../../assets/MedicHome.png"><h3 style="font-weight: bold">{{publishedPublication.titleMarketing}}</h3></a>
+        </nz-list-item-meta-title>
+        <nz-list-item-meta-description>
+          {{publishedPublication.caption}}
+        </nz-list-item-meta-description>
+      </nz-list-item-meta>
+      <ul nz-list-item-actions class="itemIcon">
+        <nz-list-item-action><i class="listIcon" nz-icon nzType="like-fill" style="margin-right: 8px;"></i> {{publishedPublication.like_count}}</nz-list-item-action>
+        <nz-list-item-action><i class="listIcon" nz-icon nzType="message-fill" style="margin-right: 8px;"></i> {{publishedPublication.comments_count}}</nz-list-item-action>
+      </ul>
+      <nz-list-item-extra class="itemImage">
+        <img class="image" alt="logo" src="{{publishedPublication.media_url}}" />
+      </nz-list-item-extra>
+    </nz-list-item>
+  </nz-list>
+</cdk-virtual-scroll-viewport>

@@ -1,0 +1,41 @@
+.container {
+  margin-top: 12px;
+  height: 98%;
+  border-bottom: 1px solid #e8e8e8;
+  border-top: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+
+nz-list {
+  padding-top: 12px;
+  padding-right: 24px;
+}
+
+.item {
+  padding-left: 12px;
+  margin-bottom: 12px;
+  background-color: #f0f2f5;
+}
+
+.itemTitleDescription{
+    width: 100%;
+}
+
+.itemIcon {
+  width: 100%;
+}
+
+.itemImage {
+  text-align: center;
+  position: relative;
+  width: 40%;
+}
+
+.listIcon {
+  font-size: 20px;
+  color: #01a897;
+}
+
+.image{
+    width: 60%;
+}

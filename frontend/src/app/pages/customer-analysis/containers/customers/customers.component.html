@@ -1,0 +1,144 @@
+<!-- Menu -->
+<app-menu></app-menu>
+<div class="content">
+    <nz-spin style="margin-top: 50px;" nzTip="Loading..." [nzSize]="'large'" nzSpinning="{{spinner}}"></nz-spin>
+
+    <div *ngIf="spinner == false">
+      <nz-table style="width: 100%;" class="table" #nzTable #filterTable [nzData]="listOfDisplayData"  nzSize="small" [nzPageSize]="20">
+        <thead>
+          <tr>
+            <th nzCustomFilter>
+              Last name
+              <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="lastname">
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+            <th nzCustomFilter>
+              First name
+              <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="firstname">
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+            <th nzCustomFilter>
+              Phone
+              <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="phone">
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+            <th nzCustomFilter>
+              Mail
+              <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="mail">
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+            <th nzCustomFilter>
+              Postal code
+              <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="postalcode">
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+            <th nzCustomFilter>
+              City
+              <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="city">
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+            <th *ngFor="let column of listOfColumns; trackBy: trackByName"
+                [(nzSortOrder)]="column.sortOrder"
+                [nzSortFn]="column.sortFn"
+                [nzFilters]="column.listOfFilter"
+                [nzFilterFn]="column.filterFn">
+              {{ column.name }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of customersTable">
+            <td>{{ data.last_name }}</td>
+            <td>{{ data.first_name }}</td>
+            <td>{{ data.phone }}</td>
+            <td>{{ data.email }}</td>
+            <td>{{ data.postal_code }}</td>
+            <td>{{ data.city }}</td>
+            <td>{{ data.date_of_birth }}</td>
+            <td>{{ data.gender }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+
+<nz-dropdown-menu #lastname="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search last name" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #firstname="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search first name" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #phone="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search phone number" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #mail="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search mail" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #postalcode="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search postal code" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu  #city="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search city" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+
+

@@ -1,0 +1,31 @@
+.rowHeader {
+  height: 8%; /* hauteur du parent */
+  text-align: center;
+  background: #01a897;
+}
+
+.LinkedinTitle {
+  display: flex;
+}
+
+.rowHeaderTitle {
+  margin: auto;
+  margin-left: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.rowHeaderTitlesituationText {
+  margin: auto;
+  color: white;
+}
+
+.buttonsPanel {
+  margin: auto; /* eh oui, tout bêtement */
+  margin-right: 24px;
+  text-align: right;
+}
+
+.buttonStyle {
+  font-weight: bold;
+}

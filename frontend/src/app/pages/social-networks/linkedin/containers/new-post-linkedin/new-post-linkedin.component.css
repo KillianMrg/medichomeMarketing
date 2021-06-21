@@ -1,0 +1,51 @@
+:host ::ng-deep .avatar-uploader > .ant-upload {
+  width: 400px;
+  height: 400px;
+}
+
+.content {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.rowTitle {
+  margin-top: 1%;
+  height: 8%; /* hauteur du parent */
+}
+
+.titleContent {
+  display: flex;
+}
+
+.rowTitleText {
+  margin: auto;
+  margin-left: 0px;
+  font-weight: bold;
+  margin-bottom: 1%;
+}
+
+.rowContent {
+  height: 83%;
+}
+
+.description {
+  font-weight: bold;
+  margin-bottom: 3%;
+}
+
+
+.login-form {
+  max-width: 300px;
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}

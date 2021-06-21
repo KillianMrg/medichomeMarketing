@@ -1,0 +1,29 @@
+.content {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.rowTitle {
+  margin-top: 1%;
+  height: 8%; /* hauteur du parent */
+}
+
+.titleContent {
+  display: flex;
+}
+
+.rowTitleText {
+  margin: auto;
+  margin-left: 0px;
+  font-weight: bold;
+  margin-bottom: 1%;
+}
+
+.rowContent {
+  height: 83%;
+}
+
+.description {
+  font-weight: bold;
+  margin-bottom: 3%;
+}

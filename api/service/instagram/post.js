@@ -45,6 +45,8 @@ registerOne = async (req,res) => {
             media_url: req.media_url,
             timestamp: req.timestamp,
             permalink: req.permalink,
+            author: req.username,
+            authorLastUpdate: req.username,
             status: 'PUBLISHED_PUBLICATIONS'
         },{
             upsert:true
@@ -96,7 +98,7 @@ registerPostById = async (req,res) => {
     try{
         await fbApp.api(req.id,
         'GET',
-        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url,permalink,comments.limit(10){text,username,timestamp,like_count,id}"},
+        {"fields":"id,ig_id,timestamp,comments_count,caption,like_count,media_type,media_url,permalink,comments.limit(10){text,username,timestamp,like_count,id},username"},
         function (content) {
             this.registerOne(content);
         });

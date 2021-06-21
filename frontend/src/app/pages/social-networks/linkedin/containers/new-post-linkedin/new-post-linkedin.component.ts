@@ -128,9 +128,9 @@ const datas = [
 
 
 @Component({
-  selector: 'app-new-post-Linkedin',
-  templateUrl: './new-post-Linkedin.component.html',
-  styleUrls: ['./new-post-Linkedin.component.css'],
+  selector: 'app-new-post-linkedin',
+  templateUrl: './new-post-linkedin.component.html',
+  styleUrls: ['./new-post-linkedin.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewPostLinkedinComponent implements OnInit {

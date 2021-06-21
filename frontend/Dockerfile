@@ -12,4 +12,4 @@ RUN npm run build
 # Final
 FROM nginx:alpine
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist/medicHome-marketing /usr/share/nginx/html
